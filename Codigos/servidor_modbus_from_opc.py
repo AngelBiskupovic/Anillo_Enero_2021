@@ -1,6 +1,5 @@
 from pyModbusTCP.server import ModbusServer, DataBank
 from time import sleep
-from random import uniform
 from pyModbusTCP import utils
 from OPC_Client import OPC_client
 import statistics as stats
@@ -35,7 +34,7 @@ def write_float(address, floats_list):
     return DataBank.set_words(address, b16_l)
 
 ##############Servidor Modbus###################
-servidor = ModbusServer(host="localhost", port=12345, no_block=True)
+servidor = ModbusServer(host="localhost", port=12346, no_block=True)
 
 servidor.start()
 ##############Cliente OPC###################
