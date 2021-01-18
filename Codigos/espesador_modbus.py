@@ -126,7 +126,7 @@ class FloatModbusClient(ModbusClient):
         b16_l = utils.long_list_to_word(b32_l)
         return self.write_multiple_registers(address, b16_l)
 
-cliente = FloatModbusClient(host='localhost', port=12345, auto_open=True)
+cliente = FloatModbusClient(host='localhost', port=12345, auto_open=True) #Esto habría que cambiarlo por la dirreción IP del PC2
 
 
 
