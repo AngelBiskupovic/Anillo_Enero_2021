@@ -12,7 +12,6 @@ import pickle
 from sklearn.preprocessing import StandardScaler, RobustScaler
 from ControlModelWrapper import ControlWrapper
 from ModeloEncDec.ModeloMultiple import ModeloEncDec
-import time
 from pyModbusTCP.client import ModbusClient
 from pyModbusTCP import utils
 from time import sleep
@@ -127,7 +126,7 @@ class FloatModbusClient(ModbusClient):
         return self.write_multiple_registers(address, b16_l)
 
 cliente = FloatModbusClient(host='localhost', port=12345, auto_open=True) #Esto habría que cambiarlo por la dirreción IP del PC2
-
+cliente_inputs = FloatModbusClient(host='localhost', port=12346, auto_open=True) #Esto habría que cambiarlo por la dirreción IP del PC2
 
 
 ########################################## Simulación ##################################################################
@@ -136,7 +135,7 @@ inputs_history = []
 set_points_list = []
 
 # Condiciones iniciales
-cliente.write_float(0, [0.7,120])
+cliente_inputs.write_float(0, [0.7,120])
 
 i = 0
 index = 0
@@ -145,8 +144,8 @@ while True:
     sleep(1)
 
     # Reading Inputs
-    flocculant = cliente.read_float(0,1)
-    output_flow = cliente.read_float(2,1)
+    flocculant = cliente_inputs.read_float(0,1)
+    output_flow = cliente_inputs.read_float(2,1)
     print(flocculant)
 
     # Reading perturbations from real data
@@ -154,7 +153,7 @@ while True:
     input_solidC = perturbations[index, 1]
 
     # Writing perturbations to MODBUS
-    cliente.write_float(4, [input_flow,input_solidC])
+    cliente.write_float(0, [flocculant,output_flow,input_flow,input_solidC])
 
 
     u_dict = {'br_7120_ft_1002': np.array([flocculant]), 'bk_7110_ft_1030': np.array([output_flow]),
