@@ -130,10 +130,10 @@ while True:
         
         ##########Envio OPC-MODBUS##########
         #Recepcion desde cliente OPC
-        flocculant = client.inputs['flocculant'].get_value()
-        output_flow = client.inputs['output_flow'].get_value()
+        #flocculant = client.inputs['flocculant'].get_value()
+        #output_flow = client.inputs['output_flow'].get_value()
 
         #envio a cliente modbus
-        write_float(0,[flocculant,output_flow])
+        #write_float(0,[flocculant,output_flow])
     
 servidor.close()
