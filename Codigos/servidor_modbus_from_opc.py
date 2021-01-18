@@ -5,6 +5,7 @@ from pyModbusTCP import utils
 from OPC_Client import OPC_client
 import statistics as stats
 
+#Este vendría a ser el servidor que recibe los datos desde OPC
 class SubHandler(object):
 
     """
@@ -35,12 +36,10 @@ def write_float(address, floats_list):
 
 ##############Servidor Modbus###################
 servidor = ModbusServer(host="localhost", port=12345, no_block=True)
-servidor_inputs = ModbusServer(host="localhost", port=12346, no_block=True)
 
 servidor.start()
-servidor_inputs.start()
 ##############Cliente OPC###################
-client = OPC_client("opc.tcp://localhost:4840/freeopcua/server/", subscribe_to='inputs', handler=SubHandler)
+client = OPC_client("opc.tcp://localhost:4840/freeopcua/server/", subscribe_to='inputs', handler=SubHandler) #Esto debería ser cambiado por el cliente OPC que lee los datos desde el controlador o la base de datos
 
 client.conect()
 
