@@ -34,7 +34,7 @@ def write_float(address, floats_list):
     return DataBank.set_words(address, b16_l)
 
 ##############Servidor Modbus###################
-servidor = ModbusServer(host="localhost", port=12345, no_block=True)
+servidor = ModbusServer(host="localhost", port=12345, no_block=True) ##Esto habría que cambiarlo por la dirección IP del PC 2
 
 servidor.start()
 ##############Cliente OPC###################
