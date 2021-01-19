@@ -11,3 +11,5 @@ Esta versión contiene 5 scripts:
 -cliente_salidas: Simula la lectura de un sensor, este script lee las entradas.
 
 -servidor_modbus_to_opc: se encarga de juntar la información via modbus y pasarla a OPC, además se reduce la tasa de envios de 1 seg a 5 seg.
+
+Nota: No es necesario realizar la comunicación modbus con cable ethernet, hice pruebas sin cable, y funcionaba bien.
