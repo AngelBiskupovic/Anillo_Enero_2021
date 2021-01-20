@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch
 import random
-from OPC_Client import OPC_client
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim

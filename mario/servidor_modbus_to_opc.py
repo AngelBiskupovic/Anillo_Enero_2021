@@ -2,23 +2,24 @@ from pyModbusTCP.server import ModbusServer, DataBank
 from time import sleep
 from random import uniform
 from pyModbusTCP import utils
-from OPC_Client import OPC_client
 import statistics as stats
+import random
+import time
 
-class SubHandler(object):
+try:
+    from IPython import embed
+except ImportError:
+    import code
 
-    """
-    Subscription Handler. To receive events from server for a subscription
-    """
-    def __init__(self):
-       pass
 
-    def datachange_notification(self, node, val, data):
-        global flag
-        flag = 1
+    def embed():
+        vars = globals()
+        vars.update(locals())
+        shell = code.InteractiveConsole(vars)
+        shell.interact()
 
-    def event_notification(self, event):
-        print("Python: New event", event)
+from opcua import Client
+
 
 ##############Funcion de lectura y escritura modbus###################
 def read_float(address, number=1):
@@ -38,9 +39,35 @@ servidor = ModbusServer(host="localhost", port=12345, no_block=True) ##Esto habr
 
 servidor.start()
 ##############Cliente OPC###################
-client = OPC_client("opc.tcp://localhost:4840/freeopcua/server/", subscribe_to='inputs', handler=SubHandler)
+url = "opc.tcp://192.168.0.15:4080"
+client = Client(url)
+client.connect()
 
 client.conect()
+flag = 1
+
+inputs = {'flocculant': 0, 'output_flow': 0}
+outputs = {'solidC': 0, 'bed': 0, 'pressure': 0, 'torque': 0}
+perturbations = {'input_flow': 0, 'solid_concentration': 0}
+
+root = client.get_root_node()
+objects = client.get_objects_node()
+thickener = objects.get_child(['2:Thickener'])
+
+
+inputs_folder = thickener.get_child(['2:Inputs'])
+inputs['flocculant'] = inputs_folder.get_child(['2:flocculant'])
+inputs['output_flow'] = inputs_folder.get_child(['2:output_flow'])
+
+outputs_folder = thickener.get_child(['2:Outputs'])
+outputs['solidC'] = outputs_folder.get_child('2:solidC')
+outputs['bed'] = outputs_folder.get_child('2:bed')
+outputs['pressure'] = outputs_folder.get_child('2:pressure')
+outputs['torque'] = outputs_folder.get_child('2:torque')
+
+perturbations_folder = thickener.get_child(['2:Perturbations'])
+perturbations['input_flow'] = perturbations_folder.get_child(['2:input_flow'])
+perturbations['solid_concentration'] = perturbations_folder.get_child(['2:solid_concentration'])
 
 ####Creacion de lista de variables para reducción de tiempo de envio de 1 a 5 sseg##########
 flocculant1_list = []
@@ -116,22 +143,24 @@ while True:
         solidC_mean = stats.mean(solidC_list)
         solidC_list = [solidC]  
         ##########Envio MODBUS-OPC##########
+
+
         #Entradas a OPC
-        client.inputs['flocculant'].set_value(float(flocculant1_mean))
-        client.inputs['output_flow'].set_value(float(output_flow1_mean))
+        inputs['flocculant'].set_value(float(flocculant1_mean))
+        inputs['output_flow'].set_value(float(output_flow1_mean))
         #Perturbarciones a OPC
-        client.perturbations['input_flow'].set_value(float(input_flow_mean))
+        perturbations['input_flow'].set_value(float(input_flow_mean))
         client.perturbations['solid_concentration'].set_value(float(input_solidC_mean))
         #Salidas a OPC
-        client.outputs['bed'].set_value(float(bed_mean))
-        client.outputs['pressure'].set_value(float(pressure_mean))
-        client.outputs['torque'].set_value(float(torque_mean))
-        client.outputs['solidC'].set_value(float(solidC_mean))
+        outputs['bed'].set_value(float(bed_mean))
+        outputs['pressure'].set_value(float(pressure_mean))
+        outputs['torque'].set_value(float(torque_mean))
+        outputs['solidC'].set_value(float(solidC_mean))
         
         ##########Envio OPC-MODBUS##########
         #Recepcion desde cliente OPC
-        flocculant = client.inputs['flocculant'].get_value()
-        output_flow = client.inputs['output_flow'].get_value()
+        flocculant = inputs['flocculant'].get_value()
+        output_flow = inputs['output_flow'].get_value()
 
         #envio a cliente modbus
         write_float(0,[flocculant,output_flow])
