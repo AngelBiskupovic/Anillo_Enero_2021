@@ -1,0 +1,19 @@
+-f https://download.pytorch.org/whl/torch_stable.html
+-f https://pytorch-geometric.com/whl/torch-1.6.0+cpu.html
+numpy==1.19.4
+pandas==1.1.4
+opcua==0.98.12
+pymodbustcp==0.1.8
+cassandra-driver==3.24.0
+torch==1.6.0+cpu
+torchvision==0.7.0+cpu
+scikit-learn==0.21.2
+python-dateutil==2.8.1
+torch-scatter
+torch-sparse
+torch-cluster
+torch-spline-conv
+torch-geometric
+networkx==2.3
+miceforest
+xgboost==1.2.1

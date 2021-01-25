@@ -1,0 +1,9 @@
+Net: ModeloEncDec 
+Weighted: False 
+h_init: False 
+hidden_size: 75 
+batch_size: 16 
+inversed: False 
+Xavier_init: True
+Augmentations: False
+Eval Losses: 0.38140255718603044

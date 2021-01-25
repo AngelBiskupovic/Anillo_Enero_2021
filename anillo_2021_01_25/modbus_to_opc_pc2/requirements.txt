@@ -1,0 +1,4 @@
+opcua==0.98.12
+pymodbustcp==0.1.8
+cassandra-driver==3.24.0
+statistics
