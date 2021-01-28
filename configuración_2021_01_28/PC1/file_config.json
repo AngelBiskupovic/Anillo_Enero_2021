@@ -1,0 +1,95 @@
+{"Containers":[
+
+    {"containerID1":"1",
+        "Configuracion":{
+            "IP_adress_container":"192.168.0.115",
+            "Port_needed":"4080"},
+        "type":"OPC",
+        "library":"OPC",
+        "Imagen_name":"angelbiskupovic/opc_server_pc3:1.0",
+        "Parameters":{
+            "IP_adress_server":"0.0.0.0",
+            "Port":"4080"}},
+            
+    {"containerID1":"2",
+         "Configuracion":{
+             "IP_adress_container":"192.168.0.136",
+             "Port_needed":["4080", "12346"]},
+         "type":"modbus_to_opc",
+         "library":"modbus_server",
+         "Imagen_name":"angelbiskupovic/server_modbus_to_opc_pc2:1.0",
+         "Parameters":{
+             "IP_adress_server":"0.0.0.0",
+             "IP_adress_client":"192.168.0.136",
+             "Port_1":"4080",
+             "Port_2":"12346"}},
+             
+    {"containerID1":"3",
+        "Configuracion":{
+            "IP_adress_container":"192.168.0.122",
+            "Port_needed":["12345","12346"]},
+            "type":"modbus_client",
+            "library":"modbus_client",
+            "Imagen_name":"angelbiskupovic/inputs_client:1.0",
+            "Parameters":{
+                "IP_adress_server":"192.168.0.136",
+                "IP_adress_client":"192.168.0.122",
+                "Port_1":"12345",
+                "Port_2":"12346"},
+            "Variable":{
+                "Variable_Tag":["flocculant","output_flow"],
+                "Variable_type":"Inputs",
+                "number_type":"float",
+                "address": ["0","2"]}},
+                
+    {"containerID1":"4",
+        "Configuracion":{
+            "IP_adress_container":"192.168.0.122",
+            "Port_needed":["12345","12346"]},
+            "type":"modbus_client",
+            "library":"modbus_client",
+            "Imagen_name":"angelbiskupovic/perturbations_client:1.0",
+            "Parameters":{
+                "IP_adress_server":"192.168.0.136",
+                "IP_adress_client":"192.168.0.122",
+                "Port_1":"12345",
+                "Port_2":"12346"},
+            "Variable":{
+                "Variable_Tag":["input_flow","solid_concentration"],
+                "Variable_type":"Perturbations",
+                "number_type":"float",
+                "address": ["4","6"]}},
+                
+    {"containerID1":"5",
+        "Configuracion":{
+            "IP_adress_container":"192.168.0.122",
+            "Port_needed":["12345","12346"]},
+            "type":"modbus_client",
+            "library":"modbus_client",
+            "Imagen_name":"angelbiskupovic/outputs_client:1.0",
+            "Parameters":{
+                "IP_adress_server":"192.168.0.136",
+                "IP_adress_client":"192.168.0.122",
+                "Port_1":"12345",
+                "Port_2":"12346"},
+            "Variable":{
+                "Variable_Tag":["solidC","bed","pressure","torque"],
+                "Variable_type":"Outputs",
+                "number_type":"float",
+                "address": ["8","10","12","14"]}},
+                
+    {"containerID1":"6",
+        "Configuracion":{
+            "IP_adress_container":"192.168.0.136",
+            "Port_needed":["12345","12346"]},
+        "type":"Controller",
+        "library":"controller",
+        "Imagen_name":"angelbiskupovic/opc_controller_pc3:1.0",
+        "Parameters":{
+            "IP_adress_client":"192.168.0.136",
+            "Port":"4080"},
+        "Variable":{
+            "inputs":["flocculant","output_flow"],
+            "perturbations":["input_flow","solid_concentration"],
+            "outputs":["solidC","bed","pressure","torque"]}}]}
+    
