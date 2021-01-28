@@ -18,3 +18,5 @@ Luego ejecutar script en el pc2
 Luego ejecutar script en el pc1
 - Seguir mismos pasos caso anterior chmod +x script_config.sh
 - Ejecutar en consola comando ./script_config.sh
+
+Nota: Para el caso del PC1, se debe tener tener la imagen del espesador, ya que el script no descarga esta imagen (Dentro de este día voy a arreglar eso, y la voy a subir al repo de docker).
