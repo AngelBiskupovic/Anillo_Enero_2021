@@ -1,0 +1,232 @@
+{% extends "layout.html" %}
+{% block body %}
+<body style="background-color:#D3D3D3">
+
+<script>
+	
+	function getPlot() {
+		// Función para insertar gráficos en la página
+		var all = "all";
+		var qurl=$SCRIPT_ROOT + '/_stream';
+		$.ajax({
+			type: "POST",
+			cache: false,
+			data:{seleccion:all},
+			url: qurl,
+			dataType: "json",
+			success: function(data){
+				// Se insertan los gráficos obtenidos en la página
+				$("body").append(data.script1);
+				$("body").append(data.script2); 
+				$("body").append(data.script3);
+				document.getElementById("html1").innerHTML = data.div1;
+				document.getElementById("html2").innerHTML = data.div2;
+				document.getElementById("html3").innerHTML = data.div3;
+			},
+			error: function(jqXHR){
+				console.log("ERROR: " + jqXHR)
+			}
+		});
+	};
+	
+	// Se hace la petición de los gráficos al cargar la página
+	$(document).ready(function(){
+		getPlot();
+	});
+
+	// Actualización cada 600000=10min
+	setInterval(getPlot,600000);
+
+</script>
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Velocidad viento --###-->
+					<!--#################################################-->
+
+<div class= "EstMet_1_1">
+	<div class="card w-100">
+
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Velocidad viento [m/s]</p> </h5>
+		</div>
+		
+		<div class= "EstMet_1_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js1" >{{ script1 | safe }}  </div>
+						<div id="html1"  >{{ div1 | safe }}  </div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Temperatura --###-->
+					<!--#################################################-->
+
+<div class= "EstMet_2_1">
+	<div class="card w-100">
+		
+		<div class="card-header bg-dark text-white">
+			<h5><p class=" font-weight-bold text-center"> Temperatura [°C] </p></h5>
+		</div>
+		
+		<div class= "EstMet_2_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js2" >{{ script2 | safe }}  </div>
+						<div id="html2"  >{{ div2 | safe }}  </div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Humedad relativa --###-->
+					<!--#################################################-->
+
+<div class= "EstMet_3_1">
+	<div class="card w-100">
+		
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Humedad relativa [%]</p></h5>
+		</div>
+		
+		<div class= "EstMet_3_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js3"  >{{ script3 | safe }}  </div>
+						<div id="html3"  >{{ div3 | safe }}  </div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+					<!--#################################################-->
+					<!--###########-- Indicador de estado --###########-->
+					<!--#################################################-->
+
+<div class= "Alarma_EstMet_1">
+	<div class="card">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center">Indicador de estado</p></h5>
+		</div>
+
+		<div class="card-body">
+			<div class="card Alarma_EstMet_2 sub_etiquetas">
+				<h3 >Probabilidad de Lluvia</h3>
+				<canvas	id="g2" class="gauge" ></canvas>
+			</div>
+		</div>
+	</div>
+</div>
+
+					<!--#################################################-->
+					<!--###########-- Códigos js gauges de Probabilidad de Lluvia --###########-->
+					<!--#################################################-->
+
+<script type="text/javascript">
+	// Se crea el gauge con los ajustes necesarios
+	var gauge2 = new RadialGauge({
+		renderTo: 'g2',
+		width: 160,
+		height: 160,
+		units: "%",
+		minValue: 0,
+		startAngle: 50,
+		ticksAngle: 260,
+		valueBox: true,
+		maxValue: 100,
+		majorTicks: [
+			"0",
+			"20",
+			"40",
+			"60",
+			"80",
+			"100"
+		],
+		minorTicks: 4,
+		strokeTicks: true,
+		colorPlate: "#fff",
+		borderShadowWidth: 2,
+		
+		borders: true,
+		fontNumbersSize:20,
+		fontUnitsSize:40,
+		fontNumbersSize:25,
+		colorNumbers:"#000",
+		colorUnits:"#000",
+		needleType: "arrow",
+		needleWidth: 5,
+		needleCircleSize: 7,
+		needleCircleOuter: true,
+		needleCircleInner: false,
+		needleShadow:true,
+		
+		animationDuration: 300,
+		
+		colorBarProgress:"rgba(50,200,50,.75)",
+		colorValueBoxBackground: "#fff",
+		valueDec:1,
+		valueInt:1,
+		animationRule: "linear"
+	}).draw();
+
+	function alarm_requests(){
+		// Esta función pide el dato de probabilidad de lluvia y actualiza el gauge
+		var qurl=$SCRIPT_ROOT + '/_forecast_alarm';
+		var x = 0;
+		$.ajax({
+			url:qurl,
+			type: 'POST',
+			dataType:'json',
+			success: function(respuesta){
+			  
+				if (1){
+					gauge2.value = 0; gauge2.update();
+				}
+				else{
+					gauge2.value = respuesta.prob_prec; gauge2.update();
+				}
+			},
+			error: function(){
+			  console.log("ERROR en alarm_requests()");
+			},
+		});
+	}
+
+	function resizeCanvas(){
+		// Esta función actualiza las dimensiones del gauge según el tamaño de la pantalla en que se vea
+		$('.Alarma_EstMet_1').each(function() {
+
+			H = 1*$(this).height();
+			W = 0.3*$(this).width();
+			document.gauges[0].update({ width: W ,height: W }); 
+		});
+	}
+	
+	// Al cargar la página se pide el dato del gauge
+	alarm_requests();
+	
+	// El gauge se actualiza cada 10 segundos.
+	setInterval(function(){
+
+		alarm_requests();
+	}, 10000);
+
+	// En caso de ajustarse el tamaño de la pantalla se reajusta el tamaño del gauge
+	window.addEventListener("resize", resizeCanvas);
+
+
+</script>
+{% endblock %}

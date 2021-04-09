@@ -1,0 +1,9 @@
+## Crear Keyspace
+CREATE KEYSPACE usuarios WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
+
+## Creacion de Tablas
+
+CREATE TABLE usuarios.data(name text, password text, access float, session_id uuid, PRIMARY KEY ((name),access));
+
+## Borrar tabla (en caso de ser necesario)
+TRUNCATE usuarios.data;

@@ -1,0 +1,1968 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<body style="background-color:#D3D3D3">
+	
+	
+<script type="text/javascript">
+	
+	function getDate() {
+		// Esta función asigna la fecha actual a todos los form tipo "date"
+		
+		// Se guardan el día, mes y año en variables distintas
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1;
+		var yyyy = today.getFullYear();
+
+		// Se corrige el número del día
+		if(dd<10){
+		  dd = '0'+dd;
+		} 
+
+		// Se corrige el número del mes
+		if(mm<10){
+		  mm = '0'+mm;
+		} 
+  
+		// Se asigna la fecha a cada form
+		for (i=1 ; i<17 ; i++){
+			document.getElementById("Initial_date_" + i).value = yyyy + '-' + mm + '-' + dd;
+			document.getElementById("Final_date_" + i).value = yyyy + '-' + mm + '-' + dd;
+		}
+	};
+
+
+	window.onload = function(){
+	  getDate();
+	};
+	
+	
+		function receive_data_2(data){
+	// Se convierten a texto los valores de los parámetros en data y se muestran en la página
+		$('#disp_bq_7110_pt_1010_sp span').text(data.bq_7110_pt_1010_sp);
+		$('#disp_bi_7110_dt_1030_solido_sp span').text(data.bi_7110_dt_1030_solido_sp);
+		$('#disp_bo_7110_lt_1009_s4_sp span').text(data.bo_7110_lt_1009_s4_sp);
+	};
+
+	function post_json_2(){
+	// Se realiza una petición a la tabla cassandra para obtener los valores de los parámetros del controlador
+		var qurl=$SCRIPT_ROOT + '/_get_control_value';
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: qurl,
+			dataType: "json",
+			success: function(data){
+				receive_data_2(data);
+			},
+			error: function(jqXHR){
+				console.log("ERROR: " + jqXHR)}
+		})
+	};
+
+	function send_control_data(param_id, value){
+	// Se envian los datos del parámetrp (nombre del tag y valor) para escribirlos en la tabla cassandra
+		var qurl=$SCRIPT_ROOT + '/_send_control_value';
+		$.ajax({
+			type: "POST",
+			url: qurl,
+			data:{
+					param_id : param_id,
+					value : value
+				 },
+			dataType: 'json'
+		  });
+	}
+
+	// Al cargar la página se piden los datos del parámetro del controlador
+	$( document ).ready(post_json_2);
+	
+	// Los parámetros del controlador se actualizan en pantalla cada 1 minuto
+	setInterval(post_json_2,10000);
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bq_7110_pt_1010_sp', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bq_7110_pt_1010_sp", $('#bq_7110_pt_1010_sp_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json_2();
+	});
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bi_7110_dt_1030_solido_sp', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bi_7110_dt_1030_solido_sp", $('#bi_7110_dt_1030_solido_sp_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json_2();
+	});
+	
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bo_7110_lt_1009_s4_sp', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bo_7110_lt_1009_s4_sp", $('#bo_7110_lt_1009_s4_sp_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json_2();
+	});	
+
+	
+	
+</script>	
+	
+	
+<script type="text/javascript">
+	
+	function receive_data(data){
+	// Se insertan los datos de los sensores en la página 
+	
+		$('#datetime').text(data.datetime);
+		$('#data_bf_7110_dt_1011 span').text(data.bf_7110_DT_1011);
+		$('#data_bg_7110_dt_1011_solido span').text(data.bg_7110_DT_1011_SOLIDO);
+		$('#data_bh_7110_dt_1030 span').text(data.bh_7110_DT_1030);
+		$('#data_bi_7110_dt_1030_solido span').text(data.bi_7110_DT_1030_SOLIDO);
+		$('#data_bj_7110_ft_1012 span').text(data.bj_7110_FT_1012);
+		$('#data_bk_7110_ft_1030 span').text(data.bk_7110_FT_1030);
+		$('#data_bl_7110_lt_1009 span').text(data.bl_7110_LT_1009);
+		$('#data_bm_7110_lt_1009_s2 span').text(data.bm_7110_LT_1009_S2);
+		$('#data_bn_7110_lt_1009_s3 span').text(data.bn_7110_LT_1009_S3);
+		$('#data_bo_7110_lt_1009_s4 span').text(data.bo_7110_LT_1009_S4);
+		$('#data_bp_7110_ot_1003 span').text(data.bp_7110_OT_1003);
+		$('#data_bq_7110_pt_1010 span').text(data.bq_7110_PT_1010);
+		$('#data_br_7120_ft_1002 span').text(data.br_7120_FT_1002);
+		$('#data_bs_7120_ft_1001 span').text(data.bs_7120_FT_1001);
+		$('#data_bt_7120_lit_001 span').text(data.bt_7120_LIT_001);
+		$("#data_bx_ph_esp span").text(data.bx_ph_esp);
+		$("#data_by_conduct_esp span").text(data.by_conduct_esp);
+		$("#data_ci_4310_pt_0023 span").text(data.ci_4310_PT_0023);
+		
+	};
+
+	function request_fails(jqXHR){
+		alert("error: " + jqXHR.status);
+		console.log(jqXHR);
+	};
+
+	function post_json(){
+	// Esta función obtiene los valores de los sensores y los inserta en la página
+	
+		var qurl=$SCRIPT_ROOT + '/_get_value';
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: qurl,
+			dataType: "json",
+			success: receive_data,
+		});
+	};
+
+	// Al cargar la página se cargan los valores de los sensores
+	$( document ).ready(post_json);
+	
+	// Los valores mostrados en la página se actualizan cada 10 segundos
+	setInterval(post_json,10000);
+</script>
+  
+<script type="text/javascript">	
+
+	function GetPlot_Esp_past(Ini_date,Ini_time,Fin_date , Fin_time,Tag_name,html_id,js_id){
+	// Esta función genera los gráficos históricos de la pestaña "offline" de los datos de cada sensor
+		
+		var all = "all";
+		var qurl=$SCRIPT_ROOT + '/Graficos_Esp';
+		$.ajax({
+			type: "POST",
+			cache: false,
+			data:{
+				Ini_date : Ini_date,
+				Ini_time : Ini_time,
+				Fin_date : Fin_date,
+				Fin_time : Fin_time,
+				Tag_name : Tag_name,
+				PreProc  : 0
+				},
+			url: qurl,
+			dataType: "json",
+			success: function(data){
+				// Se manipula la variable "data" para que sea compatible con el formato necesario
+				
+				document.getElementById(html_id).innerHTML = data.div;
+				var DIV = document.getElementById(js_id);
+				str = data.script;
+				var strlength = str.length;
+				// Se quitan partes intermedias del string
+				strf = str.substr(34 , strlength - 44);
+				strb = str.substr(strlength - 8 , 8);
+				strt = strf + '' + strb ;
+				
+				// Se crea la variable que contiene el gráfico compatible
+				var JS = document.createElement("script");
+				
+				// Se inserta el gráfico en la página
+				JS.innerHTML = strf;
+				JS.type = "text/javascript";
+				DIV.append(JS ) ;
+				
+				// Se desactiva la animación de carga
+				Enable_Loader(Tag_name, 'none',html_id,js_id);
+				
+				// Se vuelve a habilitar el botón "aplicar"
+				get_submit(Tag_name).prop("disabled", false);
+			},
+			error: function(jqXHR){
+				console.log("ERROR: " + jqXHR)
+			}
+		});
+	};
+	
+	function GetPlot_Esp_Now(Tag_name,html_id,js_id){
+	// Esta función genera los gráficos históricos de la pestaña "online" de los datos de cada sensor
+	
+		var all = "all";
+		var qurl=$SCRIPT_ROOT + '/Graficos_Esp';
+		$.ajax({
+			type: "POST",
+			cache: false,
+			data:{
+				Ini_date : "0",
+				Ini_time : "0",
+				Fin_date : "0",
+				Fin_time : "0",
+				Tag_name : Tag_name,
+				PreProc  : 0
+				},
+			url: qurl,
+			dataType: "json",
+			success: function(data){
+				// Se manipula la variable "data" para que sea compatible con el formato necesario
+				
+				document.getElementById(html_id).innerHTML = data.div;
+				var DIV = document.getElementById(js_id);
+				str = data.script;
+				var strlength = str.length;
+				
+				// Se quitan partes intermedias del string
+				strf = str.substr(34 , strlength - 44);
+				strb = str.substr(strlength - 8 , 8);
+				strt = strf + '' + strb ;
+				
+				// Se crea la variable que contiene el gráfico compatible
+				var JS = document.createElement("script");
+				
+				// Se inserta el gráfico en la página
+				JS.innerHTML = strf;
+				JS.type = "text/javascript";
+				DIV.append(JS ) ;
+			},
+			error: function(jqXHR){
+				console.log("ERROR: " + jqXHR)
+			}
+		});
+	};
+
+	function set_active(button_id){
+	//Esta función habilita y deshabilita los botones "Online" y "Offline" según corresponda cuando uno de ellos es presionado
+	//Nota: Habilitado significa que puede ser presionado
+	   
+	    // Se obtiene el id del botón presionado
+		var Button = document.getElementById(button_id);	
+		
+		// Se obtienen el id del div en que se encuentra el botón presionado
+		var div_id = Button.parentNode.id;
+		
+		// Se obtiene el id del botón activo y el desactivado
+		var enabled_button = document.getElementById(div_id).querySelector(".enabled");  
+		var disabled_button = document.getElementById(div_id).querySelector(".disabled");  
+		
+		// Si el botón presionado está habilitado se deshabilita y el deshabilitado se habilita
+		if (Button == enabled_button){
+			
+			// Se desactiva el botón habilitado
+			$(enabled_button).addClass('disabled');
+			$(enabled_button).removeClass('enabled');
+			
+			// Se activa el botón deshabilitado
+			$(disabled_button).addClass('enabled');
+			$(disabled_button).removeClass('disabled');
+				
+			
+			var div = document.getElementById(div_id).querySelectorAll(".date_form"); 
+			
+			// Si el botón presionado corresponde al del modo "online" se llama a la función que crea al gráfico de ese modo y se esconde el gráfico "offline"
+			if (Button.classList.contains("button_on")){
+				
+				div[0].style.display = 'none';
+				html_id =  get_html_id(div_id);
+				js_id   =  get_js_id(div_id);
+				GetPlot_Esp_Now(div_id , html_id , js_id );
+			}
+			else{
+				div[0].style.display = 'block';
+			}
+		} 
+    };
+
+	function get_html_id(tag_name){
+	// Esta función entrega el primero de los dos ids necesarios para insertar un gráfico en la página, según el tag del sensor
+	
+		if (tag_name == "bq_7110_pt_1010")
+			return "html1";
+		if (tag_name == "bi_7110_dt_1030_solido")
+			return "html2";
+		if (tag_name == "bo_7110_lt_1009_s4")
+			return "html3";
+		if (tag_name == "br_7120_ft_1002")
+			return "html4";
+		if (tag_name == "bk_7110_ft_1030")
+			return "html5";
+        if (tag_name == "bf_7110_dt_1011")
+			return "html6";
+		if (tag_name == "bg_7110_dt_1011_solido")
+			return "html7";
+		if (tag_name == "bh_7110_dt_1030")
+			return "html8";
+		if (tag_name == "bj_7110_ft_1012")
+			return "html9";
+		if (tag_name == "bl_7110_lt_1009")
+			return "html10";
+		if (tag_name == "bm_7110_lt_1009_s2")
+			return "html11";
+		if (tag_name == "bn_7110_lt_1009_s3")
+			return "html12";
+		if (tag_name == "bp_7110_ot_1003")
+			return "html13";
+		if (tag_name == "bs_7120_ft_1001")
+			return "html14";
+		if (tag_name == "bt_7120_lit_001")
+			return "html15";
+		if (tag_name == "ci_4310_pt_0023")
+			return "html16";
+	};
+	
+	function get_js_id(tag_name){
+	// Esta función entrega el segundo de los dos ids necesarios para insertar un gráfico en la página, según el tag del sensor
+	
+		if (tag_name == "bq_7110_pt_1010")
+			return "js1";
+		if (tag_name == "bi_7110_dt_1030_solido")
+			return "js2";
+		if (tag_name == "bo_7110_lt_1009_s4")
+			return "js3";
+		if (tag_name == "br_7120_ft_1002")
+			return "js4";
+		if (tag_name == "bk_7110_ft_1030")
+			return "js5";
+		if (tag_name == "bf_7110_dt_1011")
+			return "js6";
+		if (tag_name == "bg_7110_dt_1011_solido")
+			return "js7";
+		if (tag_name == "bh_7110_dt_1030")
+			return "js8";
+		if (tag_name == "bj_7110_ft_1012")
+			return "js9";
+		if (tag_name == "bl_7110_lt_1009")
+			return "js10";
+		if (tag_name == "bm_7110_lt_1009_s2")
+			return "js11";
+		if (tag_name == "bn_7110_lt_1009_s3")
+			return "js12";
+		if (tag_name == "bp_7110_ot_1003")
+			return "js13";
+		if (tag_name == "bs_7120_ft_1001")
+			return "js14";
+		if (tag_name == "bt_7120_lit_001")
+			return "js15";
+		if (tag_name == "ci_4310_pt_0023")
+			return "js16";	
+	};
+	
+	function get_submit(tag_name){
+	// Esta función entrega el id del botón "aplicar" de un sensor según el tag correspondiente 		
+			
+		if (tag_name == "bq_7110_pt_1010")
+			return $("#Datos_1");
+		if (tag_name == "bi_7110_dt_1030_solido")
+			return $("#Datos_2");
+		if (tag_name == "bo_7110_lt_1009_s4")
+			return $("#Datos_3");
+		if (tag_name == "br_7120_ft_1002")
+			return $("#Datos_4");
+		if (tag_name == "bk_7110_ft_1030")
+			return $("#Datos_5");
+	    if (tag_name == "bf_7110_dt_1011")
+			return $("#Datos_6");
+		if (tag_name == "bg_7110_dt_1011_solido")
+			return $("#Datos_7");
+		if (tag_name == "bh_7110_dt_1030")
+			return $("#Datos_8");
+		if (tag_name == "bj_7110_ft_1012")
+			return $("#Datos_9");
+		if (tag_name == "bl_7110_lt_1009")
+			return $("#Datos_10");
+		if (tag_name == "bm_7110_lt_1009_s2")
+			return $("#Datos_11");
+		if (tag_name == "bn_7110_lt_1009_s3")
+			return $("#Datos_12");
+		if (tag_name == "bp_7110_ot_1003")
+			return $("#Datos_13");
+		if (tag_name == "bs_7120_ft_1001")
+			return $("#Datos_14");
+		if (tag_name == "bt_7120_lit_001")
+			return $("#Datos_15");
+		if (tag_name == "ci_4310_pt_0023")
+			return $("#Datos_16");
+	};
+	
+	function Enable_Loader(Tag_name, Status,html_id,js_id){
+	// Esta función activa o desactiva la animación de carga en un modal
+
+		// Se determina el id de la animación que se debe activar
+		var Loader_string = "Loader_div_" ;	
+		Loader_string = Loader_string.concat(Tag_name) ;	
+				  
+		
+		var parent = document.getElementById(Loader_string);
+		parent.style.display = Status;
+		
+		// Si la animación de carga está activa se desactiva
+		if (Status == 'block'){
+			
+			parent = document.getElementById(html_id);
+			parent.style.display = 'none';
+			parent = document.getElementById(js_id);
+			parent.style.display = 'none';
+		}
+		// Si la animación de carga está desactivada se activa
+		else{
+			
+			parent = document.getElementById(html_id);
+			parent.style.display = 'block';
+			parent = document.getElementById(js_id);
+			parent.style.display = 'block';
+		}
+		return 0;
+	};
+	
+	function right_dates(ini , fin){
+		// Esta función verifica si la fecha inicial es anterior a la final o si es anterior al día en que se realiza la petición del gráfico
+		
+		ini = new Date(ini);
+		fin = new Date(fin);
+		today = new Date();
+		
+		if (ini > fin){
+			return 0;
+		}
+		else if (ini > today) {
+			return 0;
+		} 
+		else if (fin > today) {
+			return 0;
+		} 
+		else {
+			return 1;
+		}
+	};
+	
+	// Al cargar la página se desactiva la animación de carga de cada modal en la página
+	// Nota: Modal es una pestaña emergente, es el nombre que se le da en la librería Bootstrap
+	$(document).ready(function(){
+		
+		var parent = document.getElementById("form_br_7120_ft_1002");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_br_7120_ft_1002");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bq_7110_pt_1010");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bq_7110_pt_1010");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bi_7110_dt_1030_solido");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bi_7110_dt_1030_solido");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bo_7110_lt_1009_s4");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bo_7110_lt_1009_s4");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bk_7110_ft_1030");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bk_7110_ft_1030");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bf_7110_dt_1011");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bf_7110_dt_1011");
+		parent.style.display = 'none';
+				
+		parent = document.getElementById("form_bg_7110_dt_1011_solido");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bg_7110_dt_1011_solido");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bh_7110_dt_1030");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bh_7110_dt_1030");
+		parent.style.display = 'none';
+				
+		parent = document.getElementById("form_bj_7110_ft_1012");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bj_7110_ft_1012");
+		parent.style.display = 'none';
+	
+		parent = document.getElementById("form_bl_7110_lt_1009");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bl_7110_lt_1009");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bm_7110_lt_1009_s2");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bm_7110_lt_1009_s2");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bn_7110_lt_1009_s3");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bn_7110_lt_1009_s3");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bp_7110_ot_1003");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bp_7110_ot_1003");
+		parent.style.display = 'none';
+		
+		parent = document.getElementById("form_bs_7120_ft_1001");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bs_7120_ft_1001");
+		parent.style.display = 'none';
+				
+		parent = document.getElementById("form_bt_7120_lit_001");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_bt_7120_lit_001");
+		parent.style.display = 'none';
+				
+		parent = document.getElementById("form_ci_4310_pt_0023");
+		parent.style.display = 'none';
+		parent = document.getElementById("Loader_div_ci_4310_pt_0023");
+		parent.style.display = 'none';
+	});
+
+	// Al presionar el botón "aplicar" asociado al tag "br_7120_ft_1002" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_br_7120_ft_1002', function (e){
+		
+		e.preventDefault();
+		
+
+		if (right_dates($('#Initial_date_4').val()  , $('#Final_date_4').val())){
+			
+		$("#Datos_4").prop("disabled", true);
+		Enable_Loader("br_7120_ft_1002", 'block',get_html_id("br_7120_ft_1002"),get_js_id("br_7120_ft_1002"));
+		GetPlot_Esp_past($('#Initial_date_4').val() , $('#Initial_time_4').val() , $('#Final_date_4').val() , 
+								  $('#Final_time_4').val() ,'br_7120_ft_1002', get_html_id("br_7120_ft_1002") , 
+								  get_js_id("br_7120_ft_1002"));
+
+		};
+	});
+	
+	// Al presionar el botón que abre el modal asociado al tag "br_7120_ft_1002" se carga el directamente el gráfico "online"	
+	$(document).on('show.bs.modal','#Modal_br_7120_ft_1002', function (){
+		
+		GetPlot_Esp_Now("br_7120_ft_1002", get_html_id("br_7120_ft_1002") , get_js_id("br_7120_ft_1002" ));
+	});
+	
+	// Al presionar el botón "aplicar" asociado al tag "bq_7110_pt_1010" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_bq_7110_pt_1010', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_1').val()  , $('#Final_date_1').val())){	
+		$("#Datos_1").prop("disabled", true);
+		Enable_Loader("bq_7110_pt_1010", 'block',get_html_id("bq_7110_pt_1010"),get_js_id("bq_7110_pt_1010"));
+		GetPlot_Esp_past($('#Initial_date_1').val() , $('#Initial_time_1').val() , $('#Final_date_1').val() , 
+						  $('#Final_time_1').val() ,'bq_7110_pt_1010', get_html_id("bq_7110_pt_1010") , 
+						  get_js_id("bq_7110_pt_1010"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bq_7110_pt_1010" se carga el directamente el gráfico "online"	
+	$(document).on('show.bs.modal','#Modal_bq_7110_pt_1010', function (){
+		
+		GetPlot_Esp_Now("bq_7110_pt_1010", get_html_id("bq_7110_pt_1010") , get_js_id("bq_7110_pt_1010" ));
+	});
+
+	// Al presionar el botón "aplicar" asociado al tag "bi_7110_dt_1030_solido" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_bi_7110_dt_1030_solido', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_2').val()  , $('#Final_date_2').val())){
+		$("#Datos_2").prop("disabled", true);
+		Enable_Loader("bi_7110_dt_1030_solido", 'block',get_html_id("bi_7110_dt_1030_solido"),get_js_id("bi_7110_dt_1030_solido"));
+		GetPlot_Esp_past($('#Initial_date_2').val() , $('#Initial_time_2').val() , $('#Final_date_2').val() , 
+						  $('#Final_time_2').val() ,'bi_7110_dt_1030_solido', get_html_id("bi_7110_dt_1030_solido") , 
+						  get_js_id("bi_7110_dt_1030_solido"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bi_7110_dt_1030_solido" se carga el directamente el gráfico "online"		
+	$(document).on('show.bs.modal','#Modal_bi_7110_dt_1030_solido', function (){
+		
+		GetPlot_Esp_Now("bi_7110_dt_1030_solido", get_html_id("bi_7110_dt_1030_solido") , get_js_id("bi_7110_dt_1030_solido" ));
+	});
+	
+	// Al presionar el botón "aplicar" asociado al tag "bo_7110_lt_1009_s4" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_bo_7110_lt_1009_s4', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_3').val()  , $('#Final_date_3').val())){
+		$("#Datos_3").prop("disabled", true);
+		Enable_Loader("bo_7110_lt_1009_s4", 'block',get_html_id("bo_7110_lt_1009_s4"),get_js_id("bo_7110_lt_1009_s4"));
+		GetPlot_Esp_past($('#Initial_date_3').val() , $('#Initial_time_3').val() , $('#Final_date_3').val() , 
+						  $('#Final_time_3').val() ,'bo_7110_lt_1009_s4', get_html_id("bo_7110_lt_1009_s4") , 
+						  get_js_id("bo_7110_lt_1009_s4"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bo_7110_lt_1009_s4" se carga el directamente el gráfico "online"		
+	$(document).on('show.bs.modal','#Modal_bo_7110_lt_1009_s4', function (){
+		
+		GetPlot_Esp_Now("bo_7110_lt_1009_s4", get_html_id("bo_7110_lt_1009_s4") , get_js_id("bo_7110_lt_1009_s4" ));
+	});
+	
+	// Al presionar el botón "aplicar" asociado al tag "bk_7110_ft_1030" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_bk_7110_ft_1030', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_5').val()  , $('#Final_date_5').val())){
+		$("#Datos_5").prop("disabled", true);
+		Enable_Loader("bk_7110_ft_1030", 'block',get_html_id("bk_7110_ft_1030"),get_js_id("bk_7110_ft_1030"));
+		GetPlot_Esp_past($('#Initial_date_5').val() , $('#Initial_time_5').val() , $('#Final_date_5').val() , 
+						  $('#Final_time_5').val() ,'bk_7110_ft_1030', get_html_id("bk_7110_ft_1030") , 
+						  get_js_id("bk_7110_ft_1030"));}
+	});
+	
+	// Al presionar el botón que abre el modal asociado al tag "bk_7110_ft_1030" se carga el directamente el gráfico "online"		
+	$(document).on('show.bs.modal','#Modal_bk_7110_ft_1030', function (){
+		
+		GetPlot_Esp_Now("bk_7110_ft_1030", get_html_id("bk_7110_ft_1030") , get_js_id("bk_7110_ft_1030" ));
+	});
+		
+	// Al presionar el botón "aplicar" asociado al tag "bf_7110_dt_1011" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"		
+	$(document).on('submit','#form_bf_7110_dt_1011', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_6').val()  , $('#Final_date_6').val())){
+		$("#Datos_6").prop("disabled", true);
+		Enable_Loader("bf_7110_dt_1011", 'block',get_html_id("bf_7110_dt_1011"),get_js_id("bf_7110_dt_1011"));
+		GetPlot_Esp_past($('#Initial_date_6').val() , $('#Initial_time_6').val() , $('#Final_date_6').val() , 
+						  $('#Final_time_6').val() ,'bf_7110_dt_1011', get_html_id("bf_7110_dt_1011") , 
+						  get_js_id("bf_7110_dt_1011"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bf_7110_dt_1011" se carga el directamente el gráfico "online"	
+	$(document).on('show.bs.modal','#Modal_bf_7110_dt_1011', function (){
+		
+		GetPlot_Esp_Now("bf_7110_dt_1011", get_html_id("bf_7110_dt_1011") , get_js_id("bf_7110_dt_1011" ));
+	});
+
+	// Al presionar el botón "aplicar" asociado al tag "bg_7110_dt_1011_solido" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_bg_7110_dt_1011_solido', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_7').val()  , $('#Final_date_7').val())){
+		$("#Datos_7").prop("disabled", true);
+		Enable_Loader("bg_7110_dt_1011_solido", 'block',get_html_id("bg_7110_dt_1011_solido"),get_js_id("bg_7110_dt_1011_solido"));
+		GetPlot_Esp_past($('#Initial_date_7').val() , $('#Initial_time_7').val() , $('#Final_date_7').val() , 
+						  $('#Final_time_7').val() ,'bg_7110_dt_1011_solido', get_html_id("bg_7110_dt_1011_solido") , 
+						  get_js_id("bg_7110_dt_1011_solido"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bg_7110_dt_1011_solido" se carga el directamente el gráfico "online"	
+	$(document).on('show.bs.modal','#Modal_bg_7110_dt_1011_solido', function (){
+		
+		GetPlot_Esp_Now("bg_7110_dt_1011_solido", get_html_id("bg_7110_dt_1011_solido") , get_js_id("bg_7110_dt_1011_solido" ));
+	});
+	
+	// Al presionar el botón "aplicar" asociado al tag "bh_7110_dt_1030" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_bh_7110_dt_1030', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_8').val()  , $('#Final_date_8').val())){
+		$("#Datos_8").prop("disabled", true);
+		Enable_Loader("bh_7110_dt_1030", 'block',get_html_id("bh_7110_dt_1030"),get_js_id("bh_7110_dt_1030"));
+		GetPlot_Esp_past($('#Initial_date_8').val() , $('#Initial_time_8').val() , $('#Final_date_8').val() , 
+						  $('#Final_time_8').val() ,'bh_7110_dt_1030', get_html_id("bh_7110_dt_1030") , 
+						  get_js_id("bh_7110_dt_1030"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bh_7110_dt_1030" se carga el directamente el gráfico "online"	
+	$(document).on('show.bs.modal','#Modal_bh_7110_dt_1030', function (){
+		
+		GetPlot_Esp_Now("bh_7110_dt_1030", get_html_id("bh_7110_dt_1030") , get_js_id("bh_7110_dt_1030" ));
+	});
+	
+	// Al presionar el botón "aplicar" asociado al tag "bj_7110_ft_1012" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_bj_7110_ft_1012', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_9').val()  , $('#Final_date_9').val())){
+		$("#Datos_9").prop("disabled", true);
+		Enable_Loader("bj_7110_ft_1012", 'block',get_html_id("bj_7110_ft_1012"),get_js_id("bj_7110_ft_1012"));
+		GetPlot_Esp_past($('#Initial_date_9').val() , $('#Initial_time_9').val() , $('#Final_date_9').val() , 
+						  $('#Final_time_9').val() ,'bj_7110_ft_1012', get_html_id("bj_7110_ft_1012") , 
+						  get_js_id("bj_7110_ft_1012"));}
+	});
+	
+	// Al presionar el botón que abre el modal asociado al tag "bj_7110_ft_1012" se carga el directamente el gráfico "online"		
+	$(document).on('show.bs.modal','#Modal_bj_7110_ft_1012', function (){
+		
+		GetPlot_Esp_Now("bj_7110_ft_1012", get_html_id("bj_7110_ft_1012") , get_js_id("bj_7110_ft_1012" ));
+	});
+
+	// Al presionar el botón "aplicar" asociado al tag "bl_7110_lt_1009" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"
+	$(document).on('submit','#form_bl_7110_lt_1009', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_10').val()  , $('#Final_date_10').val())){
+		$("#Datos_10").prop("disabled", true);
+		Enable_Loader("bl_7110_lt_1009", 'block',get_html_id("bl_7110_lt_1009"),get_js_id("bl_7110_lt_1009"));
+		GetPlot_Esp_past($('#Initial_date_10').val() , $('#Initial_time_10').val() , $('#Final_date_10').val() , 
+						  $('#Final_time_10').val() ,'bl_7110_lt_1009', get_html_id("bl_7110_lt_1009") , 
+						  get_js_id("bl_7110_lt_1009"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bl_7110_lt_1009" se carga el directamente el gráfico "online"		
+	$(document).on('show.bs.modal','#Modal_bl_7110_lt_1009', function (){
+		
+		GetPlot_Esp_Now("bl_7110_lt_1009", get_html_id("bl_7110_lt_1009") , get_js_id("bl_7110_lt_1009" ));
+	});
+		
+	// Al presionar el botón "aplicar" asociado al tag "bm_7110_lt_1009_s2" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"		
+	$(document).on('submit','#form_bm_7110_lt_1009_s2', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_11').val()  , $('#Final_date_11').val())){
+		$("#Datos_11").prop("disabled", true);
+		Enable_Loader("bm_7110_lt_1009_s2", 'block',get_html_id("bm_7110_lt_1009_s2"),get_js_id("bm_7110_lt_1009_s2"));
+		GetPlot_Esp_past($('#Initial_date_11').val() , $('#Initial_time_11').val() , $('#Final_date_11').val() , 
+						  $('#Final_time_11').val() ,'bm_7110_lt_1009_s2', get_html_id("bm_7110_lt_1009_s2") , 
+						  get_js_id("bm_7110_lt_1009_s2"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bm_7110_lt_1009_s2" se carga el directamente el gráfico "online"		
+	$(document).on('show.bs.modal','#Modal_bm_7110_lt_1009_s2', function (){
+		
+		GetPlot_Esp_Now("bm_7110_lt_1009_s2", get_html_id("bm_7110_lt_1009_s2") , get_js_id("bm_7110_lt_1009_s2" ));
+	});
+	
+	// Al presionar el botón "aplicar" asociado al tag "bn_7110_lt_1009_s3" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"		
+	$(document).on('submit','#form_bn_7110_lt_1009_s3', function (e){
+		
+		e.preventDefault();
+		$("#Datos_12").prop("disabled", true);
+		
+		if (right_dates($('#Initial_date_12').val()  , $('#Final_date_12').val())){
+		Enable_Loader("bn_7110_lt_1009_s3", 'block',get_html_id("bn_7110_lt_1009_s3"),get_js_id("bn_7110_lt_1009_s3"));
+		GetPlot_Esp_past($('#Initial_date_12').val() , $('#Initial_time_12').val() , $('#Final_date_12').val() , 
+						  $('#Final_time_12').val() ,'bn_7110_lt_1009_s3', get_html_id("bn_7110_lt_1009_s3") , 
+						  get_js_id("bn_7110_lt_1009_s3"));}
+	});
+	
+	// Al presionar el botón que abre el modal asociado al tag "bn_7110_lt_1009_s3" se carga el directamente el gráfico "online"
+	$(document).on('show.bs.modal','#Modal_bn_7110_lt_1009_s3', function (){
+		
+		GetPlot_Esp_Now("bn_7110_lt_1009_s3", get_html_id("bn_7110_lt_1009_s3") , get_js_id("bn_7110_lt_1009_s3" ));
+	});
+		
+	// Al presionar el botón "aplicar" asociado al tag "bp_7110_ot_1003" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"		
+	$(document).on('submit','#form_bp_7110_ot_1003', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_13').val()  , $('#Final_date_13').val())){
+		$("#Datos_13").prop("disabled", true);
+		Enable_Loader("bp_7110_ot_1003", 'block',get_html_id("bp_7110_ot_1003"),get_js_id("bp_7110_ot_1003"));
+		GetPlot_Esp_past($('#Initial_date_13').val() , $('#Initial_time_13').val() , $('#Final_date_13').val() , 
+						  $('#Final_time_13').val() ,'bp_7110_ot_1003', get_html_id("bp_7110_ot_1003") , 
+						  get_js_id("bp_7110_ot_1003"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bp_7110_ot_1003" se carga el directamente el gráfico "online"	
+	$(document).on('show.bs.modal','#Modal_bp_7110_ot_1003', function (){
+		
+		GetPlot_Esp_Now("bp_7110_ot_1003", get_html_id("bp_7110_ot_1003") , get_js_id("bp_7110_ot_1003" ));
+	});
+	
+	// Al presionar el botón "aplicar" asociado al tag "bs_7120_ft_1001" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"		
+	$(document).on('submit','#form_bs_7120_ft_1001', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_14').val()  , $('#Final_date_14').val())){
+		$("#Datos_14").prop("disabled", true);
+		Enable_Loader("bs_7120_ft_1001", 'block',get_html_id("bs_7120_ft_1001"),get_js_id("bs_7120_ft_1001"));
+		GetPlot_Esp_past($('#Initial_date_14').val() , $('#Initial_time_14').val() , $('#Final_date_14').val() , 
+						  $('#Final_time_14').val() ,'bs_7120_ft_1001', get_html_id("bs_7120_ft_1001") , 
+						  get_js_id("bs_7120_ft_1001"));}
+	});
+	
+	// Al presionar el botón que abre el modal asociado al tag "bs_7120_ft_1001" se carga el directamente el gráfico "online"		
+	$(document).on('show.bs.modal','#Modal_bs_7120_ft_1001', function (){
+		
+		GetPlot_Esp_Now("bs_7120_ft_1001", get_html_id("bs_7120_ft_1001") , get_js_id("bs_7120_ft_1001" ));
+	});
+		
+	// Al presionar el botón "aplicar" asociado al tag "bt_7120_lit_001" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"		
+	$(document).on('submit','#form_bt_7120_lit_001', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_15').val()  , $('#Final_date_15').val())){
+		$("#Datos_15").prop("disabled", true);
+		Enable_Loader("bt_7120_lit_001", 'block',get_html_id("bt_7120_lit_001"),get_js_id("bt_7120_lit_001"));
+		GetPlot_Esp_past($('#Initial_date_15').val() , $('#Initial_time_15').val() , $('#Final_date_15').val() , 
+						  $('#Final_time_15').val() ,'bt_7120_lit_001', get_html_id("bt_7120_lit_001") , 
+						  get_js_id("bt_7120_lit_001"));}
+	});
+
+	// Al presionar el botón que abre el modal asociado al tag "bt_7120_lit_001" se carga el directamente el gráfico "online"	
+	$(document).on('show.bs.modal','#Modal_bt_7120_lit_001', function (){
+		GetPlot_Esp_Now("bt_7120_lit_001", get_html_id("bt_7120_lit_001") , get_js_id("bt_7120_lit_001" ));
+	});
+	
+	// Al presionar el botón "aplicar" asociado al tag "ci_4310_pt_0023" (pestaña "offline" del modal) se deshabilita el botón "aplicar",
+	// se activa la animación de carega y se empieza a cargar el gráfico "offline"		
+	$(document).on('submit','#form_ci_4310_pt_0023', function (e){
+		
+		e.preventDefault();
+		
+		if (right_dates($('#Initial_date_16').val()  , $('#Final_date_16').val())){
+		$("#Datos_16").prop("disabled", true);
+		Enable_Loader("ci_4310_pt_0023", 'block',get_html_id("ci_4310_pt_0023"),get_js_id("ci_4310_pt_0023"));
+		GetPlot_Esp_past($('#Initial_date_16').val() , $('#Initial_time_16').val() , $('#Final_date_16').val() , 
+						  $('#Final_time_16').val() ,'ci_4310_pt_0023', get_html_id("ci_4310_pt_0023") , 
+						  get_js_id("ci_4310_pt_0023"));}
+	});
+	
+	// Al presionar el botón que abre el modal asociado al tag "ci_4310_pt_0023" se carga el directamente el gráfico "online"	
+	$(document).on('show.bs.modal','#Modal_ci_4310_pt_0023', function (){
+		
+		GetPlot_Esp_Now("ci_4310_pt_0023", get_html_id("ci_4310_pt_0023") , get_js_id("ci_4310_pt_0023" ));
+	});
+
+</script>  
+
+<div class= "Espesador_1">
+	<div class="card w-100">
+		
+		<!-- Título de la pestaña -->
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center">Control y Supervisión Espesador</p> </h5>
+		</div>
+		
+		<div class= "Espesador_2">
+			<div class="card w-100">
+				<div class="card-body">
+							
+					<!--#################################################-->
+					<!--######### -- Modal br_7120_FT_1002 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_br_7120_ft_1002"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_br_7120_ft_1002">
+						<p  id="data_br_7120_ft_1002"> Floculante: <span ></span> (m<sup>3</sup>/h)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_br_7120_ft_1002" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+							<!-- Título del modal -->
+							<div class="modal-header">
+								<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de Flujo Floculante (m<sup>3</sup>/h)</h5>
+								<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+							</div>
+						  
+
+							<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+								<div id="br_7120_ft_1002">
+									<button id="on_4" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+										Gráfico online 
+									</button>
+									
+									<button id="off_4" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+										Gráfico offline
+									</button> 
+									
+									<!-- ############### date-time input ############# -->  
+									<!--#################################################-->
+									<form id="form_br_7120_ft_1002" class="date_form" >
+										Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_4" value="2019-01-20"/>
+										<input type="time" id="Initial_time_4" value="12:00"/> 
+										<input type="submit" value= "Aplicar" id="Datos_4" /> 
+										Ingrese una fecha y hora final: <input type="date" id="Final_date_4" value="2019-01-21" /> 
+										<input type="time" id="Final_time_4" value="12:00"/> 
+									</form>
+								</div>
+								
+								<!-- Animación de carga -->
+								<div id="Loader_div_br_7120_ft_1002" class="card border-0">
+									<p id="Loader_1_br_7120_ft_1002" class="loader_2"> </p>
+									<h1 id="Loader_2_br_7120_ft_1002"> Cargando datos ... </h1>
+								</div>
+ 
+								<!-- ############### gráfico inserto ############# -->  
+								<!--#################################################-->
+								<div id="plot_br_7120_ft_1002">
+									<div id="js4" >{{ script | safe }}  </div>
+									<div id="html4" >{{ div | safe }}  </div>
+								</div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+					<!--#################################################-->
+					<!--######### -- Modal bq_7110_pt_1010 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bq_7110_pt_1010"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bq_7110_pt_1010">
+						<p  id="data_bq_7110_pt_1010"> Presión : <span ></span> (Kpa) </p>
+					</button> 
+					
+					<div class="modal" id="Modal_bq_7110_pt_1010" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+							<!-- Título del modal -->
+							<div class="modal-header">
+								<h5 class="modal-title w-100 text-center font-weight-bold text-white"> Gráfico de Presión hidrostática </h5>
+								<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+							</div>
+						  
+							<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+								<div id="bq_7110_pt_1010">
+									<button id="on_1" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+										Gráfico online 
+									</button>
+									
+									<button id="off_1" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+										Gráfico offline
+									</button> 
+									
+									<!-- ############### date-time input ############# -->  
+									<!--#################################################-->
+									<form id="form_bq_7110_pt_1010" class="date_form" >
+										Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_1" value="2019-01-20" />
+										<input type="time" id="Initial_time_1" value="12:00" /> 
+										<input type="submit" value= "Aplicar" id="Datos_1" /> 
+										Ingrese una fecha y hora final: <input type="date" id="Final_date_1" value="2019-01-21"/> 
+										<input type="time" id="Final_time_1" value="12:00"/> 
+									</form>
+								</div>
+								
+								<!-- Animación de carga -->
+ 								<div id="Loader_div_bq_7110_pt_1010" class="card border-0">
+									<p id="Loader_1_bq_7110_pt_1010" class="loader_2"> </p>
+									<h1 id="Loader_2_bq_7110_pt_1010"> Cargando datos ... </h1>
+								</div>
+								<!-- ############### gráfico inserto ############# -->  
+								<!--#################################################-->
+								<div id="plot_bq_7110_pt_1010">
+									<div id="js1" >{{ script | safe }}  </div>
+									<div id="html1" >{{ div | safe }}  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+							
+					<!--#################################################-->
+					<!--######### -- Modal bi_7110_dt_1030_solido -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bi_7110_dt_1030_solido"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bi_7110_dt_1030_solido">
+						<p  id="data_bi_7110_dt_1030_solido"> Sólido: <span ></span> (%Cp)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bi_7110_dt_1030_solido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de Concentración sólidos descarga (%Cp) </h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+
+								<div class="modal-body">
+
+
+									<!-- ############### On-Off buttons ############# -->  
+									<!--#################################################-->
+									<div id="bi_7110_dt_1030_solido">
+										<button id="on_2" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_2" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bi_7110_dt_1030_solido" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_2" value="2019-01-20"/>
+											<input type="time" id="Initial_time_2" value="12:00"/> 
+											<input type="submit" value= "Aplicar" id="Datos_2" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_2" value="2019-01-21"/> 
+											<input type="time" id="Final_time_2" value="12:00"/> 
+										</form>
+									</div>
+									
+									<!-- Animación de carga -->
+									<div id="Loader_div_bi_7110_dt_1030_solido" class="card border-0">
+										<p id="Loader_1_bi_7110_dt_1030_solido" class="loader_2"> </p>
+										<h1 id="Loader_2_bi_7110_dt_1030_solido"> Cargando datos ... </h1>
+									</div>								
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bi_7110_dt_1030_solido">
+										<div id="js2" >{{ script | safe }}  </div>
+										<div id="html2" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!--#################################################-->
+					<!--######### -- Modal bo_7110_lt_1009_s4 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bo_7110_lt_1009_s4"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bo_7110_lt_1009_s4">
+						<p  id="data_bo_7110_lt_1009_s4"> Cama: <span ></span> (m)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bo_7110_lt_1009_s4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de Nivel de cama (m)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+
+								<div class="modal-body">
+									<!-- ############### On-Off buttons ############# -->  
+									<!--#################################################-->
+									<div id="bo_7110_lt_1009_s4">
+										<button id="on_3" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_3" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bo_7110_lt_1009_s4" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_3" value="2019-01-20"/>
+											<input type="time" id="Initial_time_3" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_3" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_3" value="2019-01-21" /> 
+											<input type="time" id="Final_time_3" value="12:00"/> 
+										</form>
+									</div>
+									
+									<!-- Animación de carga -->
+									<div id="Loader_div_bo_7110_lt_1009_s4" class="card border-0">
+										<p id="Loader_1_bo_7110_lt_1009_s4" class="loader_2"> </p>
+										<h1 id="Loader_2_bo_7110_lt_1009_s4"> Cargando datos ... </h1>
+									</div>												
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bo_7110_lt_1009_s4">
+										<div id="js3" >{{ script | safe }}  </div>
+										<div id="html3" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>					
+				
+					<!--#################################################-->
+					<!--######### -- Modal bk_7110_ft_1030 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bk_7110_ft_1030"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bk_7110_ft_1030">
+						<p  id="data_bk_7110_ft_1030"> Flujo salida: <span ></span> (m<sup>3</sup>/h)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bk_7110_ft_1030" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de Flujo de descarga (m<sup>3</sup>/h)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+
+								<div class="modal-body">
+
+										<!-- ############### On-Off buttons ############# -->  
+										<!--#################################################-->
+									<div id="bk_7110_ft_1030">
+										<button id="on_5" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+											
+										<button id="off_5" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline	
+										</button> 
+											
+											<!-- ############### date-time input ############# -->  
+											<!--#################################################-->
+										<form id="form_bk_7110_ft_1030" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_5" value="2019-01-20"/>
+											<input type="time" id="Initial_time_5" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_5" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_5" value="2019-01-21"/> 
+											<input type="time" id="Final_time_5" value="12:00" /> 
+										</form>
+									</div>
+									
+									<!-- Animación de carga -->
+									<div id="Loader_div_bk_7110_ft_1030" class="card border-0">
+										<p id="Loader_1_bk_7110_ft_1030" class="loader_2"> </p>
+										<h1 id="Loader_2_bk_7110_ft_1030" > Cargando datos ... </h1>
+									</div>											
+		 
+										<!-- ############### gráfico inserto ############# -->  
+										<!--#################################################-->
+									<div id="plot_bk_7110_ft_1030">
+										<div id="js5" >{{ script | safe }}  </div>
+										<div id="html5" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!--#################################################-->
+					<!--######### -- Modal bf_7110_dt_1011 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bf_7110_dt_1011"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bf_7110_dt_1011">
+						<p  id="data_bf_7110_dt_1011"> Densidad: <span ></span> (Kg/m<sup>3</sup>)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bf_7110_dt_1011" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de densidad de sólidos entrada (Kg/m<sup>3</sup>)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+
+								<div class="modal-body">
+
+									<!-- ############### On-Off buttons ############# -->  
+									<!--#################################################-->
+									<div id="bf_7110_dt_1011">
+										<button id="on_6" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_6" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bf_7110_dt_1011" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_6" value="2019-01-20"/>
+											<input type="time" id="Initial_time_6" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_6" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_6" value="2019-01-21"/> 
+											<input type="time" id="Final_time_6" value="12:00" /> 
+										</form>
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_bf_7110_dt_1011" class="card border-0">
+										<p id="Loader_1_bf_7110_dt_1011" class="loader_2"> </p>
+										<h1 id="Loader_2_bf_7110_dt_1011" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bf_7110_dt_1011">
+										<div id="js6" >{{ script | safe }}  </div>
+										<div id="html6" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!--#################################################-->
+					<!--######### -- Modal bg_7110_dt_1011_solido -- ###########-->
+					<!--#################################################-->
+
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bg_7110_dt_1011_solido"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bg_7110_dt_1011_solido">
+						<p  id="data_bg_7110_dt_1011_solido"> Solido: <span ></span> (%Cp)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bg_7110_dt_1011_solido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de sólido entrada (%Cp)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>						  
+
+								<div class="modal-body">
+
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bg_7110_dt_1011_solido">
+										<button id="on_7" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+									
+										<button id="off_7" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+									
+									<!-- ############### date-time input ############# -->  
+									<!--#################################################-->
+										<form id="form_bg_7110_dt_1011_solido" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_7" value="2019-01-20"/>
+											<input type="time" id="Initial_time_7" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_7" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_7" value="2019-01-21"/> 
+											<input type="time" id="Final_time_7" value="12:00" /> 
+										</form>
+								
+									</div>
+									
+									<!-- Animación de carga -->
+									<div id="Loader_div_bg_7110_dt_1011_solido" class="card border-0">
+										<p id="Loader_1_bg_7110_dt_1011_solido" class="loader_2"> </p>
+										<h1 id="Loader_2_bg_7110_dt_1011_solido" > Cargando datos ... </h1>
+									</div>											
+ 
+								<!-- ############### gráfico inserto ############# -->  
+								<!--#################################################-->
+									<div id="plot_bg_7110_dt_1011_solido">
+										<div id="js7" >{{ script | safe }}  </div>
+										<div id="html7" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--#################################################-->
+					<!--######### -- Modal bh_7110_dt_1030 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bh_7110_dt_1030"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bh_7110_dt_1030">
+						<p  id="data_bh_7110_dt_1030"> Densidad: <span ></span> (Kg/m<sup>3</sup>)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bh_7110_dt_1030" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de densidad de sólidos salida (Kg/m<sup>3</sup>)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+
+								<div class="modal-body">
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bh_7110_dt_1030">
+										<button id="on_8" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_8" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bh_7110_dt_1030" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_8" value="2019-01-20"/>
+											<input type="time" id="Initial_time_8" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_8" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_8" value="2019-01-21"/> 
+											<input type="time" id="Final_time_8" value="12:00" /> 
+										</form>
+									
+									</div>
+									
+									<!-- Animación de carga -->
+									<div id="Loader_div_bh_7110_dt_1030" class="card border-0">
+										<p id="Loader_1_bh_7110_dt_1030" class="loader_2"> </p>
+										<h1 id="Loader_2_bh_7110_dt_1030" > Cargando datos ... </h1>
+									</div>											
+ 
+								<!-- ############### gráfico inserto ############# -->  
+								<!--#################################################-->
+									<div id="plot_bh_7110_dt_1030">
+										<div id="js8" >{{ script | safe }}  </div>
+										<div id="html8" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!--#################################################-->
+					<!--######### -- Modal bj_7110_ft_1012 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bj_7110_ft_1012"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bj_7110_ft_1012">
+						<p  id="data_bj_7110_ft_1012"> Flujo entrada: <span ></span> (m<sup>3</sup>/h)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bj_7110_ft_1012" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de flujo de entrada (m<sup>3</sup>/h)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+
+								<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bj_7110_ft_1012">
+										<button id="on_9" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_9" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bj_7110_ft_1012" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_9" value="2019-01-20"/>
+											<input type="time" id="Initial_time_9" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_9" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_9" value="2019-01-21"/> 
+											<input type="time" id="Final_time_9" value="12:00" /> 
+										</form>
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_bj_7110_ft_1012" class="card border-0">
+										<p id="Loader_1_bj_7110_ft_1012" class="loader_2"> </p>
+										<h1 id="Loader_2_bj_7110_ft_1012" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bj_7110_ft_1012">
+										<div id="js9" >{{ script | safe }}  </div>
+										<div id="html9" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+					<!--#################################################-->
+					<!--######### -- Modal bl_7110_lt_1009 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bl_7110_lt_1009"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bl_7110_lt_1009">
+						<p  id="data_bl_7110_lt_1009"> Claridad: <span ></span> (dB)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bl_7110_lt_1009" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de claridad (dB)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+					  
+								<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bl_7110_lt_1009">
+										<button id="on_10" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_10" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bl_7110_lt_1009" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_10" value="2019-01-20"/>
+											<input type="time" id="Initial_time_10" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_10" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_10" value="2019-01-21"/> 
+											<input type="time" id="Final_time_10" value="12:00" /> 
+										</form>
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_bl_7110_lt_1009" class="card border-0">
+										<p id="Loader_1_bl_7110_lt_1009" class="loader_2"> </p>
+										<h1 id="Loader_2_bl_7110_lt_1009" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bl_7110_lt_1009">
+										<div id="js10" >{{ script | safe }}  </div>
+										<div id="html10" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!--#################################################-->
+					<!--######### -- Modal bm_7110_lt_1009_s2 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bm_7110_lt_1009_s2"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bm_7110_lt_1009_s2">
+						<p  id="data_bm_7110_lt_1009_s2"> Interfase: <span ></span> (m)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bm_7110_lt_1009_s2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de interfase (m)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+								<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bm_7110_lt_1009_s2">
+										<button id="on_11" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_11" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bm_7110_lt_1009_s2" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_11" value="2019-01-20"/>
+											<input type="time" id="Initial_time_11" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_11" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_11" value="2019-01-21"/> 
+											<input type="time" id="Final_time_11" value="12:00" /> 
+										</form>
+									
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_bm_7110_lt_1009_s2" class="card border-0">
+										<p id="Loader_1_bm_7110_lt_1009_s2" class="loader_2"> </p>
+										<h1 id="Loader_2_bm_7110_lt_1009_s2" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bm_7110_lt_1009_s2">
+										<div id="js11" >{{ script | safe }}  </div>
+										<div id="html11" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!--#################################################-->
+					<!--######### -- Modal bn_7110_lt_1009_s3 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bn_7110_lt_1009_s3"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bn_7110_lt_1009_s3">
+						<p  id="data_bn_7110_lt_1009_s3"> Barro: <span ></span> (m)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bn_7110_lt_1009_s3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de barro (m)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+
+								<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bn_7110_lt_1009_s3">
+										<button id="on_12" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_12" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bn_7110_lt_1009_s3" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_12" value="2019-01-20"/>
+											<input type="time" id="Initial_time_12" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_12" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_12" value="2019-01-21"/> 
+											<input type="time" id="Final_time_12" value="12:00" /> 
+										</form>
+									
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_bn_7110_lt_1009_s3" class="card border-0">
+										<p id="Loader_1_bn_7110_lt_1009_s3" class="loader_2"> </p>
+										<h1 id="Loader_2_bn_7110_lt_1009_s3" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bn_7110_lt_1009_s3">
+										<div id="js12" >{{ script | safe }}  </div>
+										<div id="html12" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!--#################################################-->
+					<!--######### -- Modal bp_7110_ot_1003 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bp_7110_ot_1003"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bp_7110_ot_1003">
+						<p  id="data_bp_7110_ot_1003"> Torque: <span ></span> (%)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bp_7110_ot_1003" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de torque de rastrillo (%)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+								<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bp_7110_ot_1003">
+										<button id="on_13" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_13" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bp_7110_ot_1003" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_13" value="2019-01-20"/>
+											<input type="time" id="Initial_time_13" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_13" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_13" value="2019-01-21"/> 
+											<input type="time" id="Final_time_13" value="12:00" /> 
+										</form>
+									
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_bp_7110_ot_1003" class="card border-0">
+										<p id="Loader_1_bp_7110_ot_1003" class="loader_2"> </p>
+										<h1 id="Loader_2_bp_7110_ot_1003" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bp_7110_ot_1003">
+										<div id="js13" >{{ script | safe }}  </div>
+										<div id="html13" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--#################################################-->
+					<!--######### -- Modal bs_7120_ft_1001 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bs_7120_ft_1001"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bs_7120_ft_1001">
+						<p  id="data_bs_7120_ft_1001"> Dilución: <span ></span> (m<sup>3</sup>/h)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bs_7120_ft_1001" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de flujo de Agua de dilución (m<sup>3</sup>/h)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+								<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bs_7120_ft_1001">
+										<button id="on_14" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_14" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bs_7120_ft_1001" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_14" value="2019-01-20"/>
+											<input type="time" id="Initial_time_14" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_14" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_14" value="2019-01-21"/> 
+											<input type="time" id="Final_time_14" value="12:00" /> 
+										</form>
+									
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_bs_7120_ft_1001" class="card border-0">
+										<p id="Loader_1_bs_7120_ft_1001" class="loader_2"> </p>
+										<h1 id="Loader_2_bs_7120_ft_1001" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bs_7120_ft_1001">
+										<div id="js14" >{{ script | safe }}  </div>
+										<div id="html14" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--#################################################-->
+					<!--######### -- Modal bt_7120_lit_001 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_bt_7120_lit_001"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_bt_7120_lit_001">
+						<p  id="data_bt_7120_lit_001"> Nivel: <span ></span> (%)</p>
+					</button> 
+					
+					<div class="modal" id="Modal_bt_7120_lit_001" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de Nivel de estanque floculante (%)</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+						  
+								<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="bt_7120_lit_001">
+										<button id="on_15" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_15" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_bt_7120_lit_001" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_15" value="2019-01-20"/>
+											<input type="time" id="Initial_time_15" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_15" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_15" value="2019-01-21"/> 
+											<input type="time" id="Final_time_15" value="12:00" /> 
+										</form>
+									
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_bt_7120_lit_001" class="card border-0">
+										<p id="Loader_1_bt_7120_lit_001" class="loader_2"> </p>
+										<h1 id="Loader_2_bt_7120_lit_001" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_bt_7120_lit_001">
+										<div id="js15" >{{ script | safe }}  </div>
+										<div id="html15" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>									
+
+					<!--#################################################-->
+					<!--######### -- Modal ci_4310_pt_0023 -- ###########-->
+					<!--#################################################-->
+					
+					<!-- Botón para acceder a los gráficos -->
+					<button  id="button_ci_4310_pt_0023"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_ci_4310_pt_0023">
+						<p  id="data_ci_4310_pt_0023"> Presión Spigots: <span ></span> (Kpa) </p>
+					</button> 
+					
+					<div class="modal" id="Modal_ci_4310_pt_0023" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							
+								<!-- Título del modal -->
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center font-weight-bold text-white" id="exampleModalLabel"> Gráfico de presión spigots</h5>
+									<button type="button" class="btn btn-primary button-close" data-dismiss="modal"> <i class="fa fa-times large fa-1x"></i></button> 
+								</div>
+
+								<div class="modal-body">
+
+								<!-- ############### On-Off buttons ############# -->  
+								<!--#################################################-->
+									<div id="ci_4310_pt_0023">
+										<button id="on_16" type="button" class="btn btn-primary disabled button_on" onclick="set_active(this.id)">
+											Gráfico online 
+										</button>
+										
+										<button id="off_16" type="button" class="btn btn-primary enabled button_off" onclick="set_active(this.id)">
+											Gráfico offline
+										</button> 
+										
+										<!-- ############### date-time input ############# -->  
+										<!--#################################################-->
+										<form id="form_ci_4310_pt_0023" class="date_form" >
+											Ingrese una fecha y hora inicial: <input type="date" id="Initial_date_16" value="2019-01-20"/>
+											<input type="time" id="Initial_time_16" value="12:00" /> 
+											<input type="submit" value= "Aplicar" id="Datos_16" /> 
+											Ingrese una fecha y hora final: <input type="date" id="Final_date_16" value="2019-01-21"/> 
+											<input type="time" id="Final_time_16" value="12:00" /> 
+										</form>
+									
+									</div>
+
+									<!-- Animación de carga -->
+									<div id="Loader_div_ci_4310_pt_0023" class="card border-0">
+										<p id="Loader_1_ci_4310_pt_0023" class="loader_2"> </p>
+										<h1 id="Loader_2_ci_4310_pt_0023" > Cargando datos ... </h1>
+									</div>											
+	 
+									<!-- ############### gráfico inserto ############# -->  
+									<!--#################################################-->
+									<div id="plot_ci_4310_pt_0023">
+										<div id="js16" >{{ script | safe }}  </div>
+										<div id="html16" >{{ div | safe }}  </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>			
+					<!--#################################################-->
+
+					<!-- Tags sin gráficos asociados  -->
+					<p class="border border-secondary rounded" id="data_bx_ph_esp">               PH: <span></span></p>
+					<p class="border border-secondary rounded" id="data_by_conduct_esp">          Conduct.: <span></span></p>
+					
+					<!-- Imagen del espesador -->
+					<img src="{{ url_for('static', filename='images/espesador-back.png') }}" class = "img1">
+				</div>
+			</div>
+		</div>
+
+		<!-- Fecha y hora de los datos-->
+		<p class="card-text text-center font-weight-bold "> Datetime: <span id="datetime"></span></p>
+	
+	</div>
+</div>
+
+
+
+<div class= "Control_1">
+	<div class="card">
+	
+		<div class="card-header bg-dark text-white">
+			<!-- Título de la pestaña -->
+			<h5>	<p class=" font-weight-bold text-center"> Sintonización Controlador  </p> </h5>
+		</div>
+		
+		<div class= "Control_2">
+			<div class="card">
+				<div class="card-body">
+					
+					<!--#################################################-->
+					<!--#########-- Tabla Set Points --############-->
+					<!--#################################################-->
+			
+					<div class="table-responsive">
+						<table class="table text-center table-bordered table-hover table-sm ">
+							<thead class="thead-dark">
+								<!-- Primera fila de la tabla -->
+								<tr>
+									<th colspan="5" scope="row" class="text-center" >  Set Points  </th>
+								</tr>
+							</thead>
+
+							<thead class="thead-light">
+								<!-- Segunda fila de la tabla -->
+								<tr>
+									<th scope="col"> Variable</th>
+									<th colspan="1" scope="col" class="text-center" >Nuevo valor</th>
+									<th colspan="1" scope="col" class="text-center" >Valor actual</th>
+								</tr>
+							</thead>
+							  
+							<tbody>
+								<!-- Tercera fila de la tabla -->
+								<tr>
+									<th scope="row"> Presión Hidrostática (KPA)  </th>
+								  
+									<form id="bq_7110_pt_1010_sp" >
+										<td> <input id="bq_7110_pt_1010_sp_value"  type="number" min="0"  required />  		
+										<input type="submit" value= "Aplicar" /> 
+									</form>
+								  
+									<td id="disp_bq_7110_pt_1010_sp"> <span></span>  </td>
+								</tr>
+								
+								<!-- Cuarta fila de la tabla -->
+								<tr>
+									<th scope="row"> Concentración Sólidos Salida (%)  </th>
+									<form id="bi_7110_dt_1030_solido_sp">
+										<td> <input id="bi_7110_dt_1030_solido_sp_value" type="number"   min="0"   required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bi_7110_dt_1030_solido_sp"> <span></span>  </td>
+								</tr>
+								
+								<!-- Quinta fila de la tabla -->
+								<tr>
+									<th scope="row"> Nivel Cama (m) </th>
+									<form id="bo_7110_lt_1009_s4_sp" >
+										<td> <input type="number" id="bo_7110_lt_1009_s4_sp_value"   min="0"   required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bo_7110_lt_1009_s4_sp"> <span></span>  </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+	</div>
+	
+</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+</div>
+
+{% endblock %}

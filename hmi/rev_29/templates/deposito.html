@@ -1,0 +1,926 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<body style="background-color:#D3D3D3">
+	
+<script type="text/javascript">
+	
+	// Cambia el color de los círculos de los spigots
+	function colores(Circ_id){   	
+    
+		if (document.getElementById(Circ_id).style.backgroundColor == "green")
+			document.getElementById(Circ_id).style.backgroundColor= "red";
+		else
+			document.getElementById(Circ_id).style.backgroundColor= "green";
+    }
+	
+	
+	function receive_data(data){
+	// Se insertan los datos de los sensores en la página 
+		$('#datetime').text(data.datetime);
+		$('#Piez_1 span').text(data.bu_ph_pozo);
+		$('#Piez_2 span').text(data.bu_ph_pozo);
+		$('#Piez_3 span').text(data.bu_ph_pozo);
+		$('#Piez_4 span').text(data.bu_ph_pozo);
+		$('#Inclin_1 span').text(data.bu_ph_pozo);
+		$("#data_bu_ph_pozo span").text(data.bu_ph_pozo);
+		$("#data_bv_conduct_pozo span").text(data.bv_conduct_pozo);
+		$("#data_bw_temp_pozo span").text(data.bw_temp_pozo);
+   }
+   
+	function request_fails(jqXHR){
+		
+		alert("error: " + jqXHR.status);
+		console.log(jqXHR);
+	}
+
+	
+	function post_json(){
+	// Esta función obtiene los valores de los sensores y los inserta en la página
+	  
+		var qurl=$SCRIPT_ROOT + '/_get_value';
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: qurl,
+			dataType: "json",
+			success: function (data){ 
+				receive_data(data);
+			},
+		})
+	};
+  
+	// Al cargar la página se cargan los valores de los sensores
+	$( document ).ready(post_json);
+	
+	// Los valores mostrados en la página se actualizan cada 10 segundos
+	setInterval(post_json,10000);
+
+</script>
+
+
+					<!--#################################################-->
+					<!--######-- Control y Supervisión Depósito  --######-->
+					<!--#################################################-->
+
+<div class= "Deposito_1">
+	<div class="card">
+	
+		<!-- Título de la pestaña -->
+		<div class="card-header bg-dark text-white">
+			<h5>	<p class=" font-weight-bold text-center"> Control y Supervisión Depósito  </p> </h5>
+		</div>
+		
+		
+		<div class= "Deposito_2">
+			<div class="card">
+				<div class="card-body">
+					
+					<!--#################################################-->
+					<!--##### -- Datos númericos de los spigots -- ######-->
+					<!--#################################################-->
+					
+					<div > 
+						<p  class="border border-secondary rounded" id="Piez_1">   Piez. 1: <span></span>    </p>
+						<p class="border border-secondary rounded" id="Piez_2">Piez. 2: <span ></span>    </p>
+						<p class="border border-secondary rounded" id="Piez_3">Piez. 3: <span ></span>    </p>
+						<p class="border border-secondary rounded" id="Piez_4">Piez. 4: <span ></span>     </p>
+						<p  class="border border-secondary rounded" id="Inclin_1">Inclin. 1: <span ></span> </p>
+						
+						<p class="border border-secondary rounded" id="sp_1">Sp1 <span ></span></p>
+						<p class="border border-secondary rounded" id="sp_2">Sp2 <span ></span></p>
+						<p class="border border-secondary rounded" id="sp_3">Sp3 <span ></span></p>
+						<p class="border border-secondary rounded" id="sp_4">Sp4 <span ></span></p>
+						<p class="border border-secondary rounded" id="sp_5">Sp5 <span ></span></p>
+						<p class="border border-secondary rounded" id="sp_6">Sp6 <span ></span></p>
+						<p class="border border-secondary rounded" id="sp_7">Sp7 <span ></span></p>
+						<p class="border border-secondary rounded" id="sp_8">Sp8 <span ></span></p>
+						
+						<p class="border border-secondary rounded" id="data_bu_ph_pozo">PH: <span></span></p>
+						<p class="border border-secondary rounded" id="data_bv_conduct_pozo">Conduct.: <span></span></p>
+						<p class="border border-secondary rounded" id="data_bw_temp_pozo">Temp.: <span></span></p>
+
+						<img src="{{ url_for('static', filename='images/deposito2.png') }}" class = "img1">
+					</div>
+						
+					<!--#################################################-->
+					<!--######### -- Círculos interactuables para apagar/encender spigots -- ###########-->
+					<!--#################################################-->	
+					  
+					 {% if access == ACCESS['admin'] %}
+						<button class="circ_button circ_1" id="sp1" onclick="colores(this.id)"  ></button>
+						<button class="circ_button circ_2" id="sp2" onclick="colores(this.id)"  ></button>
+						<button class="circ_button circ_3" id="sp3" onclick="colores(this.id)"  ></button>
+						<button class="circ_button circ_4" id="sp4" onclick="colores(this.id)"  ></button>
+						<button class="circ_button circ_5" id="sp5" onclick="colores(this.id)"  ></button>
+						<button class="circ_button circ_6" id="sp6" onclick="colores(this.id)"  ></button>
+						<button class="circ_button circ_7" id="sp7" onclick="colores(this.id)"  ></button>
+						<button class="circ_button circ_8" id="sp8" onclick="colores(this.id)"  ></button>
+					{% else %}
+						<button class="circ_button circ_1" id="sp1" ></button>
+						<button class="circ_button circ_2" id="sp2" ></button>
+						<button class="circ_button circ_3" id="sp3" ></button>
+						<button class="circ_button circ_4" id="sp4" ></button>
+						<button class="circ_button circ_5" id="sp5" ></button>
+						<button class="circ_button circ_6" id="sp6" ></button>
+						<button class="circ_button circ_7" id="sp7" ></button>
+						<button class="circ_button circ_8" id="sp8" ></button>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		
+		<!-- Fecha y hora de los datos-->
+		<p class="card-text text-center font-weight-bold "> Datetime: <span id="datetime"></span></p>
+		
+	</div>
+</div>
+
+
+					<!--#################################################-->
+					<!--###-- Indicadores de Prob. alta dens. polvo --###-->
+					<!--#################################################-->
+
+<div class= "Side_alarms_1">
+	<div class="card">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Indicadores de Prob. alta dens. polvo</p> </h5>
+		</div>
+		
+		<div class="card-body">
+
+					<!--#################################################-->
+					<!--##################-- Gauges --###################-->
+					<!--#################################################-->
+
+			<div class="card Side_alarms_2">
+				<div class= "Side_alarms_2">
+					<h6 id="sub_etiquetas">Dentro de 24 hrs:</h6>
+						<canvas	id="g5" ></canvas>
+				</div>
+			</div>
+					
+			<div class="card Side_alarms_2">				
+				<div class= "Side_alarms_2">			  
+					<h6 id="sub_etiquetas">Dentro de 48 hrs:</h6>  
+					<canvas	id="g6" ></canvas>
+				</div>
+			</div>
+			
+			<div class="card Side_alarms_2">
+				<div class= "Side_alarms_2">
+					<h6 id="sub_etiquetas">Dentro de 72 hrs:</h6>
+					<canvas	id="g7" ></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+					<!--#################################################-->
+					<!--###########-- Indicadores de estado --###########-->
+					<!--#################################################-->
+					  
+<div class= "bottom_alarms_1">
+	<div class="card">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Indicadores de estado</p> </h5>
+		</div>
+		
+		<div class="card-body">
+		
+					
+					<!--#################################################-->
+					<!--##################-- Gauges --###################-->
+					<!--#################################################-->
+
+			<div class="flexbox">
+							
+				<div class="card">
+					<div class="box">
+						<h5 >Estabilidad Física Muro</h5>
+						<canvas	id="g3" class="gauge" ></canvas>
+					</div>
+				</div>
+							 
+				<div class="card bottom_alarms_2"> 							  
+					<div class="box">
+						<h5 >Potencial Contaminante Espesador</h5>
+						<canvas	id="g4" class="gauge" ></canvas>
+					</div>
+				</div>
+
+				<div class="card bottom_alarms_2"> 							  
+					<div class="box">
+						<h5 >Potencial Contaminante Pozo</h5>
+							<canvas	id="g8" class="gauge" ></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+
+					<!--#################################################-->
+					<!--###########-- Códigos js gauges de Indicadores de estado --###########-->
+					<!--#################################################-->
+
+<script type="text/javascript">
+	
+	<!--#################################################-->
+	<!--#######-- Gauge "Estabilidad Física Muro" --#####-->
+	<!--#################################################-->	
+	
+	// Creación y ajuste del gauge
+	var gauge3 = new RadialGauge({
+		renderTo: 'g3',
+		width: 160,
+		height: 160,
+		units: "",
+		minValue: 0,
+		startAngle: 50,
+		ticksAngle: 260,
+		valueBox: true,
+		maxValue: 100,
+		majorTicks: [
+			"",
+			"Buena",
+			"",
+			"Media",
+			"",
+			"Baja",
+			""
+		],
+		minorTicks: 0,
+		strokeTicks: true,
+		highlights: [
+			{
+				"from":67,
+				"to": 100,
+				"color": "rgba(255, 0, 0, .75)"
+			},
+			  {
+				"from":33,
+				"to": 67,
+				"color": "rgba(255, 255, 0, .75)"
+			}
+			,
+			  {
+				"from":0,
+				"to": 33,
+				"color": "rgba(0, 255, 0, .75)"
+			}
+		],
+		colorPlate: "#fff",
+		borderShadowWidth: 2,
+		borders: true,
+		fontNumbersSize:20,
+		fontUnitsSize:40,
+		fontNumbersSize:25,
+		colorNumbers:"#000",
+		colorUnits:"#000",
+		needleType: "arrow",
+		needleWidth: 5,
+		needleCircleSize: 7,
+		needleCircleOuter: true,
+		needleCircleInner: false,
+		needleShadow:true,
+		ticksWidth:1,
+		animationDuration: 300,
+		valueText:"Baja",
+		colorValueBoxBackground: "#fff",
+		animationRule: "linear",
+		colorPlate: "rgba(255, 255, 255, .55)",
+		colorPlateEnd: "rgba(255, 255, 255, .55)"
+	}).draw();
+
+	<!--#################################################-->
+	<!--#-- Gauge "Potencial Contaminante espesador" --##-->
+	<!--#################################################-->	
+	
+	// Creación y ajuste del gauge
+	var gauge4 = new RadialGauge({
+		renderTo: 'g4',
+		width: 160,
+		height: 160,
+		units: "",
+		minValue: 0,
+		startAngle: 50,
+		ticksAngle: 260,
+		valueBox: true,
+		maxValue: 100,
+		majorTicks: [
+			"",
+			"Bien",
+			"",
+			"",
+			"",
+			"Alerta ",
+			"preventiva"
+		],
+		minorTicks: 0,
+		strokeTicks: true,
+		highlights: [
+			{
+				"from":0,
+				"to": 50,
+				"color": "rgba(0, 255, 0, .75)"
+			},
+			  {
+				"from":50,
+				"to": 100,
+				"color": "rgba(255, 0, 0, .75)"
+			}
+		],
+		colorPlate: "#fff",
+		borderShadowWidth: 2,
+		borders: true,
+		fontNumbersSize:20,
+		fontUnitsSize:40,
+		fontNumbersSize:25,
+		colorNumbers:"#000",
+		colorUnits:"#000",
+		needleType: "arrow",
+		needleWidth: 5,
+		needleCircleSize: 7,
+		needleCircleOuter: true,
+		needleCircleInner: false,
+		needleShadow:true,
+		ticksWidth:1,
+		animationDuration: 300,
+		colorValueBoxBackground: "#fff",
+		colorPlate: "rgba(255, 255, 255, .55)",
+		colorPlateEnd: "rgba(255, 255, 255, .55)",
+		animationRule: "linear"
+	}).draw();
+
+	<!--#################################################-->
+	<!--####-- Gauge "Potencial Contaminante pozo" --####-->
+	<!--#################################################-->
+
+	// Creación y ajuste del gauge
+	var gauge8 = new RadialGauge({
+		renderTo: 'g8',
+		width: 160,
+		height: 160,
+		units: "",
+		minValue: 0,
+		startAngle: 50,
+		ticksAngle: 260,
+		valueBox: true,
+		maxValue: 100,
+		majorTicks: [
+			"",
+			"Bien",
+			"",
+			"Reactiva",
+			"",
+			"Crítica",
+			""
+		],
+		minorTicks: 0,
+		strokeTicks: true,
+		highlights: [
+			{
+				"from":0,
+				"to": 33,
+				"color": "rgba(0, 255, 0, .75)"
+			},
+			  {
+				"from":33,
+				"to": 67,
+				"color": "rgba(255, 255, 0, .75)"
+			}
+			,
+			  {
+				"from":67,
+				"to": 100,
+				"color": "rgba(255, 0, 0, .75)"
+			}
+		],
+		colorPlate: "#fff",
+		borderShadowWidth: 2,
+		borders: true,
+		fontNumbersSize:20,
+		fontUnitsSize:40,
+		fontNumbersSize:25,
+		colorNumbers:"#000",
+		colorUnits:"#000",
+		needleType: "arrow",
+		needleWidth: 5,
+		needleCircleSize: 7,
+		needleCircleOuter: true,
+		needleCircleInner: false,
+		needleShadow:true,
+		ticksWidth:1,
+		animationDuration: 300,
+		colorValueBoxBackground: "#fff",
+		colorPlate: "rgba(255, 255, 255, .55)",
+		colorPlateEnd: "rgba(255, 255, 255, .55)",
+		animationRule: "linear"
+	}).draw();
+
+	
+	<!--#################################################-->
+	<!--####-- Funciones que determinan el estado que muestran los gauges--####-->
+	<!--#################################################-->
+
+	// Función que determina el estado a mostrar del gauge "Estabilidad Física Muro"
+	function customValue_wall(val){
+		
+		if (val >= 66){
+			return 'Baja';
+		} 
+		else if (val >= 33){
+			return 'Media';
+		}
+		else if (val >= 0){
+			return 'Buena';
+		}
+		return;
+	
+	}
+
+	// Función que determina el color a mostrar del gauge "Estabilidad Física Muro"
+	function customColor_wall(val){
+		
+		if (val >= 66){
+			return "rgba(255, 0, 0, .55)";
+		} 
+		else if (val >= 33){
+			return  "rgba(255, 255, 0, .55)";
+		} 
+		else if (val >= 0){
+			return "rgba(0, 255, 0, .55)";
+		}
+		return;
+	}
+
+	// Función que determina el estado a mostrar del gauge "Potencial Contaminante Espesador"
+	function customValue_esp(val){
+		
+		if (val <= 50) {
+			return 'Bien';
+		} 
+		else if (val < 100) {
+			return 'Alerta preventiva';
+		}
+		return;
+	}
+	
+	// Función que determina el color a mostrar del gauge "Potencial Contaminante Espesador"
+	function customColor_esp(val){
+		
+		if (val <= 50) {
+			return "rgba(0, 255, 0, .55)";
+		} 
+		else if (val < 100) {
+			return  "rgba(255, 0, 0, .55)";
+		}
+		return;
+	}
+
+	// Función que determina el estado a mostrar del gauge "Potencial Contaminante Pozo"
+	function customValue_poz(val){
+		
+			if (val < 33) {
+				return 'Bien';
+			} else if (val < 66) {
+				return 'Alerta reactiva';
+			} else if (val <= 100){
+				return 'Alerta reactiva crítica';
+			}
+			return;
+	}
+
+	// Función que determina el color a mostrar del gauge "Potencial Contaminante Pozo"
+	function customColor_poz(val){
+		
+			if (val <= 33) {
+				return "rgba(0, 255, 0, .55)";
+			} else if (val <= 66) {
+				return  "rgba(255, 255, 0, .55)";
+			} else if (val <= 100){
+				return "rgba(255, 0, 0, .55)";
+			}
+			return;
+	}
+
+	// Función que determina el lugar de la aguja del gauge "Potencial Contaminante Espesador" según los datos de Ph y conductividad
+	function Alert_Check_esp(ph, conduct){
+		
+		var ph_max = 9.0;
+		var ph_min = 5.5;
+		var conduct_max = 750;
+		
+		if (ph < ph_min )
+			return 83;
+		else if (ph > ph_max)
+			return 83;
+		else if (conduct > conduct_max)
+			return 83;
+			
+		return 17;
+	}
+
+	// Función que determina el lugar de la aguja del gauge "Potencial Contaminante Pozo" según los datos de Ph y conductividad
+	function Alert_Check_poz(ph, conduct){
+		
+		var ph_max = 9.0;
+		var ph_min = 5.5;
+		var conduct_max = 750;
+		
+		if (ph < 0.8*ph_min)
+			return  83;
+		else if (ph > 1.2*ph_max)
+			return 83;
+		else if (conduct > 1.2*conduct_max)
+			return 83;
+		else if (ph < ph_min)
+			return  50;
+		else if (ph > ph_max)
+			return 	50;
+		else if (conduct > conduct_max)
+			return 50;
+			
+		return 17;
+	}
+
+
+	<!--#################################################-->
+	<!--#### Función que actualiza los gauges de "Indicadores de estado" ####-->
+	<!--#################################################-->
+	
+	function alarm_requests_1(){
+		
+		// Se obtienen los datos de los sensores
+		var qurl=$SCRIPT_ROOT + '/_get_value';
+		var x = 0;
+		$.ajax({
+			url:qurl,
+			type: 'POST',
+			dataType:'json',
+			success: function(respuesta){
+
+				if (1){	
+						
+					document.gauges[0].update({ value: 0, valueText: customValue_wall(0),  colorPlate: "rgba(255, 255, 255, .55)",colorPlateEnd:customColor_wall(0) })
+					document.gauges[1].update({ value: 0, valueText: customValue_esp(0),  colorPlate:"rgba(255, 255, 255, .55)",colorPlateEnd:customColor_esp(0) })
+					document.gauges[2].update({ value: 0, valueText: customValue_poz(0),  colorPlate:"rgba(255, 255, 255, .55)",colorPlateEnd:customColor_poz(0) })
+				}
+				else{
+					// Se actualizan los gauges con los datos obtenidos	
+					document.gauges[0].update({ value: 100 - Alert_Check_esp(respuesta.bx_ph_esp, respuesta.by_conduct_esp), valueText: customValue_wall(100 - Alert_Check_esp(respuesta.bx_ph_esp, respuesta.by_conduct_esp)) ,  colorPlate: "rgba(255, 255, 255, .55)",colorPlateEnd: customColor_wall(100 -Alert_Check_esp(respuesta.bx_ph_esp, respuesta.by_conduct_esp)) })
+					document.gauges[1].update({ value: Alert_Check_esp(respuesta.bx_ph_esp, respuesta.by_conduct_esp), valueText: customValue_esp(Alert_Check_esp(respuesta.bx_ph_esp, respuesta.by_conduct_esp)),  colorPlate: "rgba(255, 255, 255, .55)" , colorPlateEnd: customColor_esp(Alert_Check_esp(respuesta.bx_ph_esp, respuesta.by_conduct_esp))   })
+					document.gauges[2].update({ value: Alert_Check_poz(respuesta.bu_ph_pozo,respuesta.bv_conduct_pozo ), valueText: customValue_poz(Alert_Check_poz(respuesta.bu_ph_pozo,respuesta.bv_conduct_pozo )),  colorPlate: "rgba(255, 255, 255, .55)" , colorPlateEnd: customColor_poz(Alert_Check_poz(respuesta.bu_ph_pozo,respuesta.bv_conduct_pozo ))   })
+				}
+		
+			},
+			error: function(){
+				console.log("ERROR en alarm_requests()");
+			},
+		});
+	};
+
+	// Al cargar la página se actualizan los datos de los gauges
+	alarm_requests_1();
+
+	// Cada 10 segundos se actualizan los gauges
+	setInterval(function(){
+		alarm_requests_1();
+	}, 10000);
+
+	function resizeCanvas(){
+		// Esta función actualiza las dimensiones de los gauges según el tamaño de la pantalla en que se vea
+		$('.box').each(function() {
+			
+			H = 0.7*$(this).height();
+			W = 0.5*$(this).width();
+			document.gauges[0].update({ width: W ,height: W }); 
+			document.gauges[1].update({ width: W ,height: W }); 
+			document.gauges[2].update({ width:W ,height: W }); 
+		});
+	}
+	
+	// Al cargar la página se ajusta el tamaño de los gauges	
+	resizeCanvas();
+	
+	// En caso de ajustarse el tamaño de la pantalla se reajusta el tamaño del gauge
+	window.addEventListener("resize", resizeCanvas);
+</script>
+
+
+					<!--#################################################-->
+					<!--###########-- Códigos js gauges de Indicadores de Prob. alta dens. polvo --###########-->
+					<!--#################################################-->
+
+<script type="text/javascript">
+	
+	<!--#################################################-->
+	<!--###########-- Gauge "Dentro de 24 hrs" --########-->
+	<!--#################################################-->
+	
+	// Creación y ajuste del gauge
+	var gauge5 = new RadialGauge({
+		
+		renderTo: 'g5',
+		width: 160,
+		height: 160,
+		units: "",
+		minValue: 0,
+		startAngle: 50,
+		ticksAngle: 260,
+		valueBox: true,
+		maxValue: 100,
+		majorTicks: [
+			"",
+			"Baja",
+			"",
+			"Media",
+			"",
+			"Alta",
+			""
+		],
+		minorTicks: 0,
+		strokeTicks: true,
+		highlights: [
+			{
+				"from":67,
+				"to": 100,
+				"color": "rgba(255, 0, 0, .75)"
+			},
+			  {
+				"from":33,
+				"to": 67,
+				"color": "rgba(255, 255, 0, .75)"
+			}
+			,
+			  {
+				"from":0,
+				"to": 33,
+				"color": "rgba(0, 255, 0, .75)"
+			}
+		],
+		colorPlate: "#fff",
+		borderShadowWidth: 2,
+		borders: true,
+		fontNumbersSize:20,
+		fontUnitsSize:40,
+		fontNumbersSize:25,
+		colorNumbers:"#000",
+		colorUnits:"#000",
+		needleType: "arrow",
+		needleWidth: 5,
+		needleCircleSize: 7,
+		needleCircleOuter: true,
+		needleCircleInner: false,
+		needleShadow:true,
+		ticksWidth:1,
+		animationDuration: 300,
+		valueText:"Baja",
+		colorValueBoxBackground: "#fff",
+		animationRule: "linear",
+		colorPlate: "rgba(255, 255, 255, .55)",
+		colorPlateEnd: "rgba(255, 255, 255, .55)"
+	}).draw();
+	
+	<!--#################################################-->
+	<!--###########-- Gauge "Dentro de 48 hrs" --########-->
+	<!--#################################################-->
+
+	// Creación y ajuste del gauge
+	var gauge6 = new RadialGauge({
+		
+		renderTo: 'g6',
+		width: 160,
+		height: 160,
+		units: "",
+		minValue: 0,
+		startAngle: 50,
+		ticksAngle: 260,
+		valueBox: true,
+		maxValue: 100,
+		majorTicks: [
+			"",
+			"Baja",
+			"",
+			"Media",
+			"",
+			"Alta",
+			""
+		],
+		minorTicks: 0,
+		strokeTicks: true,
+		highlights: [
+			{
+				"from":67,
+				"to": 100,
+				"color": "rgba(255, 0, 0, .75)"
+			},
+			  {
+				"from":33,
+				"to": 67,
+				"color": "rgba(255, 255, 0, .75)"
+			}
+			,
+			  {
+				"from":0,
+				"to": 33,
+				"color": "rgba(0, 255, 0, .75)"
+			}
+		],
+		colorPlate: "#fff",
+		borderShadowWidth: 2,
+		borders: true,
+		fontNumbersSize:20,
+		fontUnitsSize:40,
+		fontNumbersSize:25,
+		colorNumbers:"#000",
+		colorUnits:"#000",
+		needleType: "arrow",
+		needleWidth: 5,
+		needleCircleSize: 7,
+		needleCircleOuter: true,
+		needleCircleInner: false,
+		needleShadow:true,
+		ticksWidth:1,
+		animationDuration: 300,
+		valueText:"Baja",
+		colorValueBoxBackground: "#fff",
+		animationRule: "linear",
+		colorPlate: "rgba(255, 255, 255, .55)",
+		colorPlateEnd: "rgba(255, 255, 255, .55)"
+	}).draw();
+	<!--#################################################-->
+	<!--###########-- Gauge "Dentro de 72 hrs" --########-->
+	<!--#################################################-->
+
+	// Creación y ajuste del gauge
+	var gauge7 = new RadialGauge({
+		
+		renderTo: 'g7',
+		width: 160,
+		height: 160,
+		units: "",
+		minValue: 0,
+		startAngle: 50,
+		ticksAngle: 260,
+		valueBox: true,
+		maxValue: 100,
+		majorTicks: [
+			"",
+			"Baja",
+			"",
+			"Media",
+			"",
+			"Alta",
+			""
+		],
+		minorTicks: 0,
+		strokeTicks: true,
+		highlights: [
+			{
+				"from":67,
+				"to": 100,
+				"color": "rgba(255, 0, 0, .75)"
+			},
+			  {
+				"from":33,
+				"to": 67,
+				"color": "rgba(255, 255, 0, .75)"
+			}
+			,
+			  {
+				"from":0,
+				"to": 33,
+				"color": "rgba(0, 255, 0, .75)"
+			}
+		],
+		colorPlate: "#fff",
+		borderShadowWidth: 2,
+		borders: true,
+		fontNumbersSize:20,
+		fontUnitsSize:40,
+		fontNumbersSize:25,
+		colorNumbers:"#000",
+		colorUnits:"#000",
+		needleType: "arrow",
+		needleWidth: 5,
+		needleCircleSize: 7,
+		needleCircleOuter: true,
+		needleCircleInner: false,
+		needleShadow:true,
+		ticksWidth:1,
+		animationDuration: 300,
+		valueText:"Baja",
+		colorValueBoxBackground: "#fff",
+		animationRule: "linear",
+		colorPlate: "rgba(255, 255, 255, .55)",
+		colorPlateEnd: "rgba(255, 255, 255, .55)"
+	}).draw();
+
+
+	<!--#################################################-->
+	<!--####-- Funciones que determinan el estado que muestran los gauges--####-->
+	<!--#################################################-->
+
+	// Función que determina el lugar de la aguja de los gauges según el dato de probabilidad entregada
+	function transform_value(Probabilidad){
+		
+		if (Probabilidad == 0){
+			return 0;
+		}
+		else if (Probabilidad == 1){
+			return 50; 
+		}
+		else if (Probabilidad == 2){
+			return 83;
+		}
+		return;
+	}
+
+	// Función que determina el estado a mostrar de los gauges
+	function customValue_dust(val){
+		
+		if (val == 0) {
+			return 'Baja';
+		} 
+		else if (val ==1) {
+			return 'Media';
+		} 
+		else if (val == 2){
+			return 'Alta';
+		}
+		return;
+	}
+
+	<!--#################################################-->
+	<!--#### Función que actualiza los gauges de "Indicadores de Prob. alta dens. polvo" ####-->
+	<!--#################################################-->
+
+	function alarm_requests_2(){
+		
+		// Se obtiene los datos de las probabilidades de alta densidad de polvo y luego se actualizan los gauges
+		var qurl=$SCRIPT_ROOT + '/_get_dust_forecast';
+		var x = 0;
+		$.ajax({
+			url:qurl,
+			data:{Clasificador : 'svm'},
+			type: 'POST',
+			dataType:'json',
+			success: function(respuesta){
+				if (0){
+					
+					document.gauges[3].update({ value: transform_value(0), valueText: customValue_dust(0) ,  colorPlate: "rgba(255, 255, 255, .55)", colorPlateEnd: customColor_poz(transform_value(0))   });
+					document.gauges[4].update({ value: transform_value(0), valueText: customValue_dust(0),  colorPlate: "rgba(255, 255, 255, .55)" , colorPlateEnd: customColor_poz(transform_value(0))   });
+					document.gauges[5].update({ value: transform_value(0), valueText: customValue_dust(0),  colorPlate: "rgba(255, 255, 255, .55)" , colorPlateEnd: customColor_poz(transform_value(0))   });
+				}
+				else{
+					// Se actualizan los gauges con los datos obtenidos
+					document.gauges[3].update({ value: transform_value(respuesta.Prob_1_ahead), valueText: customValue_dust(respuesta.Prob_1_ahead) ,  colorPlate: "rgba(255, 255, 255, .55)", colorPlateEnd: customColor_poz(transform_value(respuesta.Prob_1_ahead))   });
+					document.gauges[4].update({ value: transform_value(respuesta.Prob_2_ahead), valueText: customValue_dust(respuesta.Prob_2_ahead),  colorPlate: "rgba(255, 255, 255, .55)" , colorPlateEnd: customColor_poz(transform_value(respuesta.Prob_2_ahead))   });
+					document.gauges[5].update({ value: transform_value(respuesta.Prob_3_ahead), valueText: customValue_dust(respuesta.Prob_3_ahead),  colorPlate: "rgba(255, 255, 255, .55)" , colorPlateEnd: customColor_poz(transform_value(respuesta.Prob_3_ahead))   });
+				}
+			},
+			error: function(){
+			  console.log("ERROR en alarm_requests_2()");
+			},
+		});
+	};
+
+	// Al cargar la página se actualizan los datos de los gauges
+    alarm_requests_2();
+    
+    // Cada 10 minutps se actualizan los gauges
+    setInterval(function(){
+		alarm_requests_2();
+    }, 60*10*1000);
+
+
+	function resizeCanvas(){
+		// Esta función actualiza las dimensiones de los gauges según el tamaño de la pantalla en que se vea
+		
+		$('.Side_alarms_1').each(function() {
+		
+			H = 0.7*$(this).height();
+			W = 0.5*$(this).width();
+			document.gauges[3].update({ width: W ,height: W }); 
+			document.gauges[4].update({ width: W ,height:W }); 
+			document.gauges[5].update({ width: W ,height:W }); 
+		});
+	}
+
+	// Al cargar la página se ajusta el tamaño de los gauges
+	resizeCanvas();
+	
+	// En caso de ajustarse el tamaño de la pantalla se reajusta el tamaño del gauge
+	window.addEventListener("resize", resizeCanvas);
+
+</script>
+
+
+{% endblock %}

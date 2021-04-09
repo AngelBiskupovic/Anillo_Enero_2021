@@ -1,0 +1,1037 @@
+										/* ################################################ */
+										/* Modificaciones a elementos en generales*/
+										/* ################################################ */
+
+.card-header {
+
+	height: 8vh;
+}
+
+p{
+	
+	font-family: Bookman,Verdana, Arial, Helvetica, sans-serif;
+    font-size: 1.1vw ;
+}
+
+h6{
+
+    font-family: Bookman,Verdana ,Arial, Helvetica, sans-serif;
+    font-size: 1.3vw ;
+}
+
+input[type=button]{
+
+    font-family: Bookman,Verdana,Arial, Helvetica, sans-serif;
+    font-size: 1.3vw ;
+}
+
+.bk-root{
+
+	width: 100% !important;
+	position: absolute;
+}
+
+h3{
+	
+	text-align:center;
+}
+
+#sub_etiquetas{
+
+	text-align:center;
+	font-family: Bookman,Verdana ,Arial, Helvetica, sans-serif;
+	font-size: 1.1vw ;
+}
+
+@keyframes spin{
+
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+										/* ################################################ */
+										/* Modificaciones a elementos en control.html*/
+										/* ################################################ */
+
+.Control_1{
+
+	width: 70%;
+	margin-left: 21%;
+	margin-top: 1%;
+
+}
+
+.Control_2{
+
+	padding: 0%;
+}
+
+.table-bordered td, .table-bordered th{
+
+	border-color: #A4A4A4 !important;
+}
+
+.table-responsive{
+
+	margin-top: 1%;
+}
+
+										/* ################################################ */
+										/* Modificaciones a elementos en deposito.html*/
+										/* ################################################ */
+
+.circ_button{
+
+	background-color: #FF0000;
+    color: red;
+    padding: 0.9%;
+    display: inline-block;
+    border-radius: 50%;
+    border: 1.5px solid black;
+}
+
+.circ_1{
+
+	position: absolute;
+	top: 52%;
+	left: 92.5%;
+}
+
+.circ_2{
+
+	position: absolute;
+	top: 63%;
+	left: 76.3%;
+}
+
+.circ_3{
+
+	position: absolute;
+	top: 63.4%;
+	left: 67.7%;
+}
+
+.circ_4{
+
+	position: absolute;
+	top: 63%;
+	left: 59%;
+}
+
+.circ_5{
+  position: absolute;
+  top: 61.5%;
+  left: 49.8%;
+}
+
+.circ_6{
+
+	position: absolute;
+	top: 59.7%;
+	left: 38%;
+}
+
+.circ_7{
+
+	position: absolute;
+	top: 60%;
+	left: 30.5%;
+}
+
+.circ_8{
+
+	position: absolute;
+	top: 65%;
+	left: 20%;
+}
+
+.box{
+      
+	text-align:center;
+}
+
+.gauge{
+
+	width: 100%;
+	align-items: center;
+}
+
+.bottom_alarms_1{
+
+	width: 80%;
+	margin-left: 13.5%;
+	margin-top: 1%;	
+	
+}
+	
+.bottom_alarms_2{
+
+	margin-left: 2%;
+}
+
+.Deposito_1{
+
+	width: 67%;
+	margin-left: 13.5%;
+	margin-top: 1%;
+}
+
+.Deposito_2{
+	
+	padding: 1%;
+}
+
+.flexbox{
+      
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.flexbox>div{
+
+	flex: 3 33%;
+}
+
+.Side_alarms_1{
+
+	width: 17%;
+	margin-left: 82%;
+	margin-top: -36.8%;
+
+}
+
+.Side_alarms_2{
+	margin-top: 2%;
+	align-items: center;
+}
+
+#data_bu_ph_pozo{
+
+	position: absolute;
+	background-color: #d7d5db;
+	z-index: 1;
+	top: 6%;
+	left: 12%;
+}
+
+#data_bv_conduct_pozo{
+
+	position: absolute;
+	background-color: #d7d5db;
+	z-index: 1;
+	top: 13%;
+	left: 12%;
+}
+
+#data_bw_temp_pozo{
+
+	position: absolute;
+    background-color: #d7d5db;
+	z-index: 1;
+	top: 20%;
+	left: 12%;
+}
+
+#Piez_1{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 31%;
+	left: 8.5%;
+}
+
+#Piez_2{
+  
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 45.5%;
+	left: 20%;
+}
+
+#Piez_3{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 26%;
+	left: 40%;
+}
+
+#Piez_4{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 38%;
+	left: 56%;
+}
+
+#Inclin_1{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 63%;
+	left: 2.5%;
+}
+
+#Circ_spigots{
+
+	position: absolute;
+	float: left;
+}
+
+#sp_1{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 45.5%;
+	left: 92%;
+}
+
+#sp_2{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 56.5%;
+	left: 75.6%;
+}
+
+#sp_3{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 57%;
+	left: 67%;
+}
+
+#sp_4{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db; 
+	top: 56.5%;
+	left: 58.5%;
+}
+
+#sp_5{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db; 
+	top: 55%;
+	left: 49.2%;
+}
+
+#sp_6{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 53%;
+	left: 37%;
+}
+
+#sp_7{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 53.5%;
+	left: 30%;
+}
+	
+#sp_8{
+
+	position: absolute;
+	z-index: 1;
+	background-color: #d7d5db;
+	top: 58%;
+	left: 19.5%;
+}
+
+										/* ################################################ */
+										/* Modificaciones a elementos en est_met.html*/
+										/* ################################################ */
+
+.EstMet_1_1{
+	
+	width: 41.5%;
+	margin-left: 13.5%;
+	margin-top: 1%;
+}
+
+.EstMet_1_2{
+	
+	padding: 1%;
+}
+
+.EstMet_2_1{
+
+	width: 41.5%;
+	margin-left: 57%;
+	margin-top: -33.7%;
+}
+
+.EstMet_2_2{
+
+	padding: 1%;
+}
+
+.EstMet_3_1{
+
+	width: 41.5%;
+	margin-left: 13.5%;
+	margin-top: 1%;
+}
+
+.EstMet_3_2{
+
+	padding: 1%;
+}
+
+.Alarma_EstMet_1{
+
+	width: 41.5%;
+	margin-left: 57%;
+	margin-top: -33.7%;
+}
+
+.Alarma_EstMet_2{
+
+	align-items: center;
+	padding: 1%;
+}
+
+
+										/* ################################################ */
+										/* Modificaciones a elementos en index.html y Espesador_Prep.html*/
+										/* ################################################ */
+.Espesador_1{
+	
+	width: 70%;
+	margin-left: 21%;
+	margin-top: 1%;
+}
+
+.Espesador_2{
+
+	padding: 2%;
+}
+
+.button_on{
+
+	position: relative;
+	top: 0%;
+	left: 30%;
+	width: 18%;
+	height:  8%;
+	font-size: 1.3vw;
+	background: #3498DB;
+	color: #ffffff;
+	text-decoration: none;
+	text-shadow: none;
+	box-shadow: none;
+	display: block;
+	margin-bottom:5%;
+}
+
+.button_on:hover{
+
+	background-color: #2980B9;
+}
+
+.button_off{
+
+	position: relative;
+	top: 0%;
+	left: 30%;
+	width: 18%;
+	height:  8%;
+	font-size: 1.3vw;
+	background: #3498DB;
+	color: #ffffff;
+	text-decoration: none;
+	text-shadow: none;
+	box-shadow: none;
+	display: block;
+	margin-bottom:5%;
+}
+
+.button_off:hover{
+
+	background-color: #2980B9;
+}
+
+#button_bf_7110_dt_1011{
+
+	position: absolute;
+	top: 32.5%;
+	left: 0%;
+	padding:0;
+	width: 22%;
+	height: 4%;
+}
+
+#button_bg_7110_dt_1011_solido{
+
+	position: absolute;
+	top: 23.5%;
+	left: 0%;
+    padding:0;
+	width: 19%;
+	height: 4%;
+}
+
+#button_bh_7110_dt_1030{
+
+	position: absolute;
+	padding:0;
+	width: 23%;
+	height: 4%;
+	top: 74%;
+	left: 52%;
+}
+
+#button_bi_7110_dt_1030_solido{
+
+	position: absolute;
+	top: 78.5%;
+	left: 52%;
+    padding:0;
+	width: 20%;
+	height: 4%;
+}
+
+#button_bj_7110_ft_1012{
+
+	position: absolute;
+	padding:0;
+	width: 25%;
+	height: 4%;
+	top: 28%;
+	left: 0%;
+}
+
+#button_bk_7110_ft_1030{
+
+	position: absolute;
+    padding:0;
+	width: 24%;
+	height: 4%;
+	top: 59%;
+	left: 75%;
+}
+
+#button_bl_7110_lt_1009{
+	
+	position: absolute;
+	padding:0;
+	width: 18%;
+	height: 4%;
+	top: 42%;
+	left: 43.5%;
+}
+
+#button_bm_7110_lt_1009_s2{
+
+	position: absolute;
+	padding:0;
+	width: 18%;
+	height: 4%;
+	top: 47%;
+	left: 43.5%;
+}
+
+#button_bn_7110_lt_1009_s3{
+
+	position: absolute;
+	padding:0;
+	width: 17%;
+	height: 4%;
+	top: 52%;
+	left: 43.5%;
+}
+
+#button_bo_7110_lt_1009_s4{
+
+	position: absolute;
+	top: 57%;
+	left: 43.5%;
+    padding:0;
+	width: 17%;
+	height: 4%;
+}
+
+#button_bp_7110_ot_1003{
+
+	position: absolute;
+	padding:0;
+	width: 16%;
+	height: 4%;
+	top: 53%;
+	left: 0%;
+}
+
+#button_bq_7110_pt_1010{
+
+	position: absolute;
+	padding:0;
+	width: 19%;
+	height: 4%;
+	top: 67%;
+	left: 3%;
+}
+
+#button_br_7120_ft_1002{
+
+	position: absolute;
+	width: 22%;
+	width: 22%;
+	height: 4%;
+	left: 52%;
+	top:28.5%;
+	padding:0;
+}
+
+#button_bs_7120_ft_1001{
+
+	position: absolute;
+	padding:0;
+	width: 20%;
+	height: 4%;
+	top: 5%;
+	left: 58.5%;
+}
+
+#button_bt_7120_lit_001{
+
+	position: absolute;
+	padding:0;
+	width: 15.5%;
+	height: 4%;
+	top: 23%;
+	left: 81.5%;
+}
+
+#data_bx_ph_esp{
+
+	position: absolute;
+	background-color: #c3def4;
+	z-index: 1;
+	top: 25%;
+	left: 31%;
+}
+
+#data_by_conduct_esp{
+
+	position: absolute;
+	background-color: #c3def4;
+	z-index: 1;
+	top: 20.5%;
+	left: 31%;
+}
+
+.date_form{
+
+	text-align: center;
+	margin-bottom: 5%;
+}
+
+#button_ci_4310_pt_0023{
+
+	position: absolute;
+	padding:0;
+	width: 25.5%;
+	height: 4%;
+	top: 97%;
+	left: 74%;
+}
+
+.img1{
+
+	width: 100%;
+}
+
+form{
+
+	width:70%;
+	sizing_mode: scale_width;
+}
+
+input[type=text]{
+
+	font-size:1vw;
+}
+
+input[type=button]{
+
+	width:100%;
+	font-size:1vw;
+}
+
+.lateral-der{
+
+	float: right;
+	margin-right: 1%;
+	font-size: 1vw;
+}  
+
+#Datos_1,#Datos_2,#Datos_3,#Datos_4,#Datos_5,#Datos_6,
+#Datos_7,#Datos_8,#Datos_9,#Datos_10,#Datos_11,#Datos_12,
+#Datos_13,#Datos_14,#Datos_15,#Datos_16{
+	
+	margin-left: 100%;
+}
+
+#Loader_2_bk_7110_ft_1030, #Loader_2_br_7120_ft_1002, #Loader_2_bq_7110_pt_1010,
+#Loader_2_bi_7110_dt_1030_solido, #Loader_2_bo_7110_lt_1009_s4,
+#Loader_2_bf_7110_dt_1011,#Loader_2_bg_7110_dt_1011_solido,
+#Loader_2_bh_7110_dt_1030,#Loader_2_bj_7110_ft_1012,
+#Loader_2_bl_7110_lt_1009,#Loader_2_bm_7110_lt_1009_S2,
+#Loader_2_bn_7110_lt_1009_S3,#Loader_2_bp_7110_ot_1003,
+#Loader_2_bs_7120_ft_1001,#Loader_2_bt_7120_lit_001,
+#Loader_2_ci_4310_pt_0023{
+
+	text-align: center;
+}
+
+.loader_2{
+
+	margin-top: 15%;
+	border: 50px solid #f3f3f3; 
+	border-top: 50px solid #3498db;
+	border-radius: 50%;
+	width: 300px;
+	height: 300px;
+	animation: spin 2s linear infinite;
+	margin-left: 28%;
+	z-index:1
+}
+
+.modal-header{
+
+	background-color:#343a40;
+}
+
+.modal-content{
+
+	overflow:hidden;
+}
+
+										/* ################################################ */
+										/* Modificaciones a elementos en layout.html*/
+										/* ################################################ */
+
+.button_logout{
+
+	position: absolute;
+	top: 60%;
+	left: 0%;
+	height:  6%;
+	font-size: 1.3vw;
+	background: #3498DB;
+	color: #ffffff;
+	text-decoration: none;
+	text-shadow: none;
+	box-shadow: none;
+	display: block;
+}
+
+.button_logout:hover{
+
+	background-color: #2980B9;
+}
+
+.nav-side-menu {
+
+	overflow: auto;
+	font-family: Bookman;
+	font-size: 1.5vw;
+	font-weight: 200;
+	background-color: #2e353d;
+	position: fixed;
+	top: 0px;
+	width: 12%;
+	height: 100%;
+	color: #e1ffff;
+}
+
+.nav-side-menu .brand {
+
+	background-color: #23282e;
+	line-height: 250%;
+	display: block;
+	text-align: center;
+	font-size: 1.3vw;
+}
+
+.nav-side-menu .toggle-btn {
+
+	display: none;
+}
+
+.nav-side-menu ul,
+.nav-side-menu a,
+.nav-side-menu li {
+
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	line-height: 4vh;
+	cursor: pointer;
+}
+
+.nav-side-menu ul :not(collapsed) .arrow:before,
+.nav-side-menu li :not(collapsed) .arrow:before {
+
+	margin-left: 21%;
+	display: inline-block;
+	padding-left: 1%;
+	padding-right: 1%;
+	vertical-align: middle;
+	float: right;
+}
+
+.nav-side-menu ul a.active,
+.nav-side-menu li a a.active {
+
+    background-color: #4f5b69;
+}
+
+.nav-side-menu ul .sub-menu li.active,
+.nav-side-menu a .sub-menu li.active a.active {
+
+	color: #d19b3d;
+}
+
+.nav-side-menu ul .sub-menu li.active a,
+.nav-side-menu li .sub-menu li.active a {
+
+	color: #d19b3d;
+}
+
+.nav-side-menu ul .sub-menu li,
+.nav-side-menu li a .sub-menu li a{
+
+	background-color: #181c20;
+	border: none;
+	border-bottom: 1px solid #23282e;
+	margin-left: 0px;
+	line-height: 4vh;
+}
+
+.nav-side-menu ul .sub-menu li:hover,
+.nav-side-menu li .sub-menu li:hover a:hover {
+
+	background-color: #020203;
+}
+
+.nav-side-menu ul .sub-menu li:before,
+.nav-side-menu li .sub-menu li:before {
+
+	display: inline-block;
+	padding-left: 10px;
+	padding-right: 10px;
+	vertical-align: middle;
+}
+
+.nav-side-menu li {
+
+	padding-left: 0px;
+	border-left: 3px solid #2e353d;
+	border-bottom: 1px solid #23282e;
+}
+
+.nav-side-menu li a {
+
+	text-decoration: none;
+	color: #e1ffff;
+}
+
+.nav-side-menu li a i {
+
+	padding-left: 10px;
+	width: 20px;
+	padding-right: 20px;
+}
+
+.nav-side-menu li:hover {
+
+	border-left: 3px solid #d19b3d;
+	background-color: #4f5b69;
+	-webkit-transition: 50all 1s ease;
+	-moz-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	-ms-transition: all 1s ease;
+	transition: all 1s ease;
+}
+
+{
+  .nav-side-menu {
+  
+	position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .nav-side-menu .toggle-btn {
+  
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 10 !important;
+    padding: 3px;
+    background-color: #ffffff;
+    color: #000;
+    width: 40px;
+    text-align: center;
+  }
+  
+  .brand {
+  
+    text-align: left !important;
+    font-size: 22px;
+    padding-left: 20px;
+    line-height: 50px !important;
+  }
+}
+
+.nav-side-menu .menu-list .menu-content {
+
+	display: block;
+    font-size: 1vw ;
+    font-family: Bookman,Verdana, Arial, Helvetica, sans-serif
+  }
+
+										/* ################################################ */
+										/* Modificaciones a elementos en tendencias_X.html*/
+										/* ################################################ */
+
+.loader {
+
+	margin-top: 15%;
+	border: 50px solid #f3f3f3;
+	border-top: 50px solid #3498db;
+	border-radius: 50%;
+	width: 300px;
+	height: 300px;
+	animation: spin 2s linear infinite;
+	margin-left: 40%;
+	z-index:1
+}
+
+#Loader_div{
+
+	width: 85%;
+	z-index:10;
+	background-color:#D3D3D3;
+	margin-left: 13%;
+	text-align:center;
+}
+
+.Tendencias_1_1{
+
+	width: 40%;
+	margin-left: 13.5%;
+	margin-top: 1%;
+}
+
+.Tendencias_1_2{
+
+	padding: 1%;
+}
+
+.Tendencias_2_1{
+
+	width: 40%;
+	margin-left: 55%;
+	margin-top: -35%;
+}
+
+.Tendencias_2_2{
+
+	padding: 1%;
+}
+
+.Tendencias_3_1{
+
+	width: 40%;
+	margin-left: 13.5%;
+	margin-top: 1%;
+}
+
+.Tendencias_3_2{
+
+	padding: 1%;
+}
+
+.Tendencias_4_1_1{
+
+	width: 40%;
+	margin-left: 55%;
+	margin-top: -35%;
+}
+
+.Tendencias_4_2{
+
+	padding: 1%;
+}
+
+.Tendencias_5_1{
+
+	width: 40%;
+	margin-left: 13.5%;
+	margin-top: 1.5%;
+}
+
+.Tendencias_5_2{
+
+	padding: 2%;
+}
+
+.Tendencias_6_1{
+
+	width: 40%;
+	margin-left: 55%;
+	margin-top: -35.3%;
+}
+
+.Tendencias_6_2{
+
+	padding: 1%;
+}
+
+.Tendencias_7_1{
+
+	width: 40%;
+	margin-left: 13.5%;
+	margin-top: 1.5%;
+}
+
+.Tendencias_7_2{
+
+	padding: 1%;
+}
+
+.Tendencias_8_1{
+
+	width: 40%;
+	margin-left: 55%;
+	margin-top: -35.1%;
+}
+
+.Tendencias_8_2{
+
+	padding: 1%;
+}
+

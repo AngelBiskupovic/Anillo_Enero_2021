@@ -1,0 +1,36 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+{% block body %}
+
+	<div class="header">
+		<h1> Minera Florida</h1>
+	</div>
+
+
+<form action="/login" method="POST">
+	<div class="login">
+		<div class="login-screen">
+			
+			<div class="app-title">
+				<h1>Autentificación</h1>
+			</div>
+ 
+			<div class="login-form">
+				<div class="control-group">
+					<input type="text" class="login-field" value="" placeholder="Usuario" name="username">
+					<label class="login-field-icon fui-user" for="login-name"></label>
+				</div>
+ 
+				<div class="control-group">
+					<input type="password" class="login-field" value="" placeholder="Contraseña" name="password">
+					<label class="login-field-icon fui-lock" for="login-pass"></label>
+				</div>
+ 
+                <input type="submit" value="Iniciar sesión" class="btn btn-primary btn-large btn-block" >
+			    <br>
+			</div>
+		</div>
+	</div>
+</form>
+ 
+
+{% endblock %}
