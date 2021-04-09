@@ -1,0 +1,492 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<body style="background-color:#D3D3D3">
+	
+<script type="text/javascript">
+	
+	function receive_data(data){
+	// Se convierten a texto los valores de los parámetros en data y se muestran en la página
+		$('#datetime').text(data.datetime);
+		$('#disp_bq_7110_pt_1010_sp span').text(data.bq_7110_pt_1010_sp);
+		$('#disp_bi_7110_dt_1030_solido_sp span').text(data.bi_7110_dt_1030_solido_sp);
+		$('#disp_bo_7110_lt_1009_s4_sp span').text(data.bo_7110_lt_1009_s4_sp);
+		$('#disp_bq_7110_pt_1010_sup span').text(data.bq_7110_pt_1010_sup);
+		$('#disp_bi_7110_dt_1030_solido_sup span').text(data.bi_7110_dt_1030_solido_sup);
+		$('#disp_bo_7110_lt_1009_s4_sup span').text(data.bo_7110_lt_1009_s4_sup);
+		$('#disp_bq_7110_pt_1010_inf span').text(data.bq_7110_pt_1010_inf);
+		$('#disp_bi_7110_dt_1030_solido_inf span').text(data.bi_7110_dt_1030_solido_inf);
+		$('#disp_bo_7110_lt_1009_s4_inf span').text(data.bo_7110_lt_1009_s4_inf);
+		$('#disp_bq_7110_pt_1010_q span').text(data.bq_7110_pt_1010_q);
+		$('#disp_bi_7110_dt_1030_solido_q span').text(data.bi_7110_dt_1030_solido_q);
+		$('#disp_bo_7110_lt_1009_s4_q span').text(data.bo_7110_lt_1009_s4_q);
+		$('#disp_bk_7110_ft_1030_r span').text(data.bk_7110_ft_1030_r);
+		$('#disp_br_7120_ft_1002_r span').text(data.br_7120_ft_1002_r);
+	};
+
+	function post_json(){
+	// Se realiza una petición a la tabla cassandra para obtener los valores de los parámetros del controlador
+		var qurl=$SCRIPT_ROOT + '/_get_control_value';
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: qurl,
+			dataType: "json",
+			success: function(data){
+				receive_data(data);
+			},
+			error: function(jqXHR){
+				console.log("ERROR: " + jqXHR)}
+		})
+	};
+
+	function send_control_data(param_id, value){
+	// Se envian los datos del parámetrp (nombre del tag y valor) para escribirlos en la tabla cassandra
+		var qurl=$SCRIPT_ROOT + '/_send_control_value';
+		$.ajax({
+			type: "POST",
+			url: qurl,
+			data:{
+					param_id : param_id,
+					value : value
+				 },
+			dataType: 'json'
+		  });
+	}
+
+	// Al cargar la página se piden los datos del parámetro del controlador
+	$( document ).ready(post_json);
+	
+	// Los parámetros del controlador se actualizan en pantalla cada 1 minuto
+	setInterval(post_json,10000);
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bq_7110_pt_1010_sp', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bq_7110_pt_1010_sp", $('#bq_7110_pt_1010_sp_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bi_7110_dt_1030_solido_sp', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bi_7110_dt_1030_solido_sp", $('#bi_7110_dt_1030_solido_sp_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});
+	
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bo_7110_lt_1009_s4_sp', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bo_7110_lt_1009_s4_sp", $('#bo_7110_lt_1009_s4_sp_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+	
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bq_7110_pt_1010_sup', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bq_7110_pt_1010_sup", $('#bq_7110_pt_1010_sup_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+	
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones	
+	$(document).on('submit','#bi_7110_dt_1030_solido_sup', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bi_7110_dt_1030_solido_sup", $('#bi_7110_dt_1030_solido_sup_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones	
+	$(document).on('submit','#bo_7110_lt_1009_s4_sup', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bo_7110_lt_1009_s4_sup", $('#bo_7110_lt_1009_s4_sup_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones	
+	$(document).on('submit','#bq_7110_pt_1010_inf', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bq_7110_pt_1010_inf", $('#bq_7110_pt_1010_inf_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+	
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones	
+	$(document).on('submit','#bi_7110_dt_1030_solido_inf', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bi_7110_dt_1030_solido_inf", $('#bi_7110_dt_1030_solido_inf_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});		
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones	
+	$(document).on('submit','#bo_7110_lt_1009_s4_inf', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bo_7110_lt_1009_s4_inf", $('#bo_7110_lt_1009_s4_inf_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});		
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bq_7110_pt_1010_q', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bq_7110_pt_1010_q", $('#bq_7110_pt_1010_q_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bi_7110_dt_1030_solido_q', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bi_7110_dt_1030_solido_q", $('#bi_7110_dt_1030_solido_q_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bo_7110_lt_1009_s4_q', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bo_7110_lt_1009_s4_q", $('#bo_7110_lt_1009_s4_q_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones
+	$(document).on('submit','#bk_7110_ft_1030_r', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("bk_7110_ft_1030_r", $('#bk_7110_ft_1030_r_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});	
+
+	// Cada vez que se presione el botón aplicar en el parámetro "" se activa estas funciones	
+	$(document).on('submit','#br_7120_ft_1002_r', function (e){
+		
+		e.preventDefault();
+		// Se envían el dato nuevo ingresado del parámetro
+		send_control_data("br_7120_ft_1002_r", $('#br_7120_ft_1002_r_value').val())
+		// Se actualizan los parámetros en pantalla
+		post_json();
+	});		
+</script>
+
+<div class= "Control_1">
+	<div class="card">
+	
+		<div class="card-header bg-dark text-white">
+			<!-- Título de la pestaña -->
+			<h5>	<p class=" font-weight-bold text-center"> Sintonización Controlador  </p> </h5>
+		</div>
+		
+		<div class= "Control_2">
+			<div class="card">
+				<div class="card-body">
+					
+					<!--#################################################-->
+					<!--#########-- Tabla Set Points --############-->
+					<!--#################################################-->
+			
+					<div class="table-responsive">
+						<table class="table text-center table-bordered table-hover table-sm ">
+							<thead class="thead-dark">
+								<!-- Primera fila de la tabla -->
+								<tr>
+									<th colspan="5" scope="row" class="text-center" >  Set Points  </th>
+								</tr>
+							</thead>
+
+							<thead class="thead-light">
+								<!-- Segunda fila de la tabla -->
+								<tr>
+									<th scope="col"> Variable</th>
+									<th colspan="1" scope="col" class="text-center" >Nuevo valor</th>
+									<th colspan="1" scope="col" class="text-center" >Valor actual</th>
+								</tr>
+							</thead>
+							  
+							<tbody>
+								<!-- Tercera fila de la tabla -->
+								<tr>
+									<th scope="row"> Presión Hidrostática (KPA)  </th>
+								  
+									<form id="bq_7110_pt_1010_sp" >
+										<td> <input id="bq_7110_pt_1010_sp_value"  type="number" min="0" required />  		
+										<input type="submit" value= "Aplicar" /> 
+									</form>
+								  
+									<td id="disp_bq_7110_pt_1010_sp"> <span></span>  </td>
+								</tr>
+								
+								<!-- Cuarta fila de la tabla -->
+								<tr>
+									<th scope="row"> Concentración Sólidos Salida (%)  </th>
+									<form id="bi_7110_dt_1030_solido_sp">
+										<td> <input id="bi_7110_dt_1030_solido_sp_value" type="number"  min="0"    required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bi_7110_dt_1030_solido_sp"> <span></span>  </td>
+								</tr>
+								
+								<!-- Quinta fila de la tabla -->
+								<tr>
+									<th scope="row"> Nivel Cama (m) </th>
+									<form id="bo_7110_lt_1009_s4_sp" >
+										<td> <input type="number" id="bo_7110_lt_1009_s4_sp_value"    min="0"  required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bo_7110_lt_1009_s4_sp"> <span></span>  </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				
+					{% if access == ACCESS['admin'] %}
+					<!--#################################################-->
+					<!--######-- Tabla Límites máximos y mínimos --######-->
+					<!--#################################################-->
+				
+					<div class="table-responsive">
+						<table class="table text-center table-bordered table-hover table-sm">
+							<thead class="thead-dark">
+								<!-- Primera fila de la tabla -->
+								<tr>
+									<th colspan="5" scope="row" class="text-center" >  Límites máximos y mínimos  </th>
+								</tr>
+							</thead>
+
+							<thead class="thead-light">
+								<!-- Segunda fila de la tabla -->
+								<tr>
+									<th scope="col"> </th>
+									<th colspan="2" scope="col" class="text-center" >Máximo</th>
+									<th colspan="2" scope="col" class="text-center" >Mínimo</th>
+								</tr>
+							</thead>
+							  
+							<thead class="thead-light">
+								<!-- Tercera fila de la tabla -->
+								<tr>
+									<th scope="col">Variable</th>
+									<th scope="col">Nuevo valor</th>
+									<th scope="col">Valor actual</th>
+									<th scope="col">Nuevo valor</th>
+									<th scope="col">Valor actual</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<!-- Cuarta fila de la tabla -->
+								<tr>
+									<th scope="row"> Presión Hidrostática (KPA)  </th>
+									<form id="bq_7110_pt_1010_sup" >
+										<td> <input type="number" id="bq_7110_pt_1010_sup_value" min="0"     required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bq_7110_pt_1010_sup"> <span></span>  </td>
+								  
+									<form id="bq_7110_pt_1010_inf" >
+										<td> <input type="number" id="bq_7110_pt_1010_inf_value" min="0"     required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bq_7110_pt_1010_inf"> <span></span>  </td>
+								</tr>
+								
+								<!-- Quinta fila de la tabla -->
+								<tr>
+									<th scope="row"> Concentración Sólidos Salida (%)  </th>
+									<form id="bi_7110_dt_1030_solido_sup" >
+										<td> <input type="number" id="bi_7110_dt_1030_solido_sup_value"  min="0"     required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bi_7110_dt_1030_solido_sup"> <span></span>  </td>
+								  
+									<form id="bi_7110_dt_1030_solido_inf" >
+										<td> <input type="number" id="bi_7110_dt_1030_solido_inf_value"   min="0"   required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bi_7110_dt_1030_solido_inf"> <span></span>  </td>
+								</tr>
+								<!-- Sexta fila de la tabla -->
+								<tr>
+									<th scope="row"> Nivel Cama (m) </th>
+									<form id="bo_7110_lt_1009_s4_sup" >
+										<td> <input type="number" id="bo_7110_lt_1009_s4_sup_value"  min="0"    required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bo_7110_lt_1009_s4_sup"> <span></span>  </td>
+								
+									<form id="bo_7110_lt_1009_s4_inf" >
+										<td> <input type="number"  id="bo_7110_lt_1009_s4_inf_value" min="0"     required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bo_7110_lt_1009_s4_inf"> <span></span>  </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+						
+					<!--#################################################-->
+					<!--######-- Tabla Pesos (1) --######-->
+					<!--#################################################-->						
+						
+					<div class="table-responsive">
+						<table class="table text-center table-bordered table-hover table-sm">
+							<thead class="thead-dark">
+								<!-- Primera fila de la tabla -->
+								<tr>
+									<th colspan="5" scope="row" class="text-center" >  Pesos  </th>
+								</tr>
+							</thead>
+
+							<thead class="thead-light">
+								<!-- Segunda fila de la tabla -->
+								<tr>
+									<th scope="col"> </th>
+									<th colspan="2" scope="col" class="text-center" >Q</th>
+								</tr>
+							</thead>
+							  
+							<thead class="thead-light">
+								<!-- Tercera fila de la tabla -->
+								<tr>
+									<th scope="col">Variable</th>
+									<th scope="col">Nuevo valor</th>
+									<th scope="col">Valor actual</th>
+								</tr>
+							</thead>
+							  
+
+							<tbody>
+								<!-- Cuarta fila de la tabla -->
+								<tr>
+									<!-- ######################################### -->
+									<th scope="row"> Presión Hidrostática (KPA)  </th>
+									<form id="bq_7110_pt_1010_q" >
+										<td> <input type="number" id="bq_7110_pt_1010_q_value"  min="0"    required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bq_7110_pt_1010_q"> <span></span>  </td>
+								</tr>
+								
+								<!-- Quinta fila de la tabla -->
+								<tr>
+									<th scope="row"> Concentración Sólidos Salida (%)  </th>
+									<form id="bi_7110_dt_1030_solido_q" >
+										<td> <input type="number" id="bi_7110_dt_1030_solido_q_value"  min="0"    required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bi_7110_dt_1030_solido_q"> <span></span>  </td>
+								</tr>
+								
+								<!-- Sexta fila de la tabla -->
+								<tr>
+									<th scope="row"> Nivel Cama (m) </th>
+									<form id="bo_7110_lt_1009_s4_q" >
+										<td> <input type="number" id="bo_7110_lt_1009_s4_q_value"  min="0"    required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bo_7110_lt_1009_s4_q"> <span></span>  </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+						<!-- ######################################### -->
+						
+					<!--#################################################-->
+					<!--######-- Tabla Pesos (2)--######-->
+					<!--#################################################-->						
+						
+					<div class="table-responsive">
+						<table class="table text-center table-bordered table-hover table-sm">
+							<thead class="thead-dark">
+								<!-- Primera fila de la tabla -->
+								<tr>
+									<th colspan="5" scope="row" class="text-center" >  Pesos  </th>
+								</tr>
+							</thead>
+
+							<thead class="thead-light">
+								<!-- Segundo fila de la tabla -->
+								<tr>
+									<th scope="col"> </th>
+									<th colspan="2" scope="col" class="text-center" >R</th>
+								</tr>
+							</thead>
+							  
+							<thead class="thead-light">
+								<!-- Tercera fila de la tabla -->
+								<tr>
+									<th scope="col">Variable</th>
+									<th scope="col">Nuevo valor</th>
+									<th scope="col">Valor actual</th>
+								</tr>
+							</thead>
+							  
+
+							<tbody>
+								<!-- Cuarta fila de la tabla -->
+								<tr>
+									<th scope="row">  BDP  </th>
+									<form id="bk_7110_ft_1030_r" >
+										<td> <input type="number" id="bk_7110_ft_1030_r_value"   min="0"   required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_bk_7110_ft_1030_r"> <span></span>  </td>
+								</tr>
+								
+								<!-- Quinta fila de la tabla -->
+								<tr>
+									<th scope="row"> Flujo Floculante </th>
+									<form id="br_7120_ft_1002_r" >
+										<td> <input type="number" id="br_7120_ft_1002_r_value"  min="0"    required />  		
+										<input type="submit" value= "Aplicar"   /> 
+									</form>
+									<td id="disp_br_7120_ft_1002_r"> <span></span>  </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		
+		<!-- Se muestra la fecha y hora de los datos -->
+		<p class="card-text text-center font-weight-bold "> Datetime: <span id="datetime"></span></p>
+		
+	</div>
+	
+</div>
+
+{% endblock %} 

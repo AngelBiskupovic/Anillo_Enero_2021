@@ -1,0 +1,128 @@
+<!doctype html>
+<head>
+	<title>Minera Florida</title>
+	<META http-equiv="Content-Style-Type" content="text/css">
+
+	<!-- carga de css -->
+	
+		<!-- carga css del formato de la HMI -->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/position.css') }}"> 
+		
+		<!-- carga bootstrap.css -->
+		<link rel="stylesheet" id="bootstrap-css" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+		
+		<!-- carga fontawesome.css -->
+		<link href="{{ url_for('static', filename='css/fontawesome.css') }}" rel="stylesheet">
+	
+		<!-- carga bokeh.css -->
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bokeh.css') }}" type="text/css" />
+
+	<!-- carga de js -->
+	
+		<!-- carga jquery.js -->
+		<script type=text/javascript src="{{url_for('static', filename='js/jquery.js') }}"></script>
+		
+		<!-- carga archivos bokeh -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/bokeh.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/bokeh-api.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/bokeh-widgets.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/bokeh-tables.js') }}"></script>
+		
+		<!-- carga raphael.js -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/raphael-2.1.4.min.js') }}"></script>
+		
+		<!-- carga gauge.js -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/gauge.min.js') }}"></script>
+		
+		<!-- carga bootstrap -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+		
+		<!-- carga Font Awesome -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/all.js') }}"></script>
+
+	<script type="text/javascript">
+		// Se asigna como activo el item en el menu lateral según la pestaña que se muestre
+		
+		var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	 
+		$(function(){
+			
+			$("a").each(function(){
+				if ($(this).attr("href") == window.location.pathname){
+					$(this).addClass("active");
+			    }
+		    });
+		 
+			$("li").each(function(){
+				if ($(this).attr("href") == window.location.pathname){
+					$(this).addClass("active");
+			    }
+		    });
+		
+		});
+	</script>
+	
+</head>
+
+
+<body>
+	
+<!-- Menu lateral -->
+<div class="nav-side-menu">
+	
+	<div class="brand"> Minera Florida </div>
+    
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+    
+	<div class="menu-list list-group">
+  
+		<ul id="menu-content" class="menu-content collapse out ">
+
+			<a href="{{ url_for('index') }}" class="list-group-item list-group-item-action">
+				<i class="fa fa-filter  fa-lg"></i> Espesador
+			</a>
+			<a href="{{ url_for('Espesador_Prep') }}" class="list-group-item list-group-item-action">
+				<i class="fa fa-filter  fa-lg"></i> Espesador Prep.
+			</a>
+					 
+			<a href="{{ url_for('home_dep') }}" class="list-group-item list-group-item-action">
+				<i class="fa fa-water  fa-lg"></i> Depósito
+			</a>
+
+			<!-- Pestaña colapsable de las tendencias de las variables -->
+			<li data-toggle="collapse" data-target="#service" class="collapsed">
+				<a href="#"><i class="fa fa-chart-line fa-lg"></i> Tendencias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-lg fa-angle-down" >  </i> </span></a>
+			</li>  
+					   
+			<ul class="sub-menu collapse" id="service">
+				<li> <i class="fa fa-lg fa-angle-right"></i><a href="{{ url_for('home_tendencias_4') }}"> Escala tiempo: 1 hora  </a>  </li>
+				<li><i class="fa fa-lg fa-angle-right" >  </i> <a href="{{ url_for('home_tendencias') }}"> Escala tiempo: 1 día </a>   </li>
+				<li><i class="fa fa-lg fa-angle-right" >  </i> <a href="{{ url_for('home_tendencias_2') }}"> Escala tiempo: 3 días </a></li>
+				<li><i class="fa fa-lg fa-angle-right" >  </i> <a href="{{ url_for('home_tendencias_3') }}"> Escala tiempo: 7 días </a></li>
+			</ul>
+					  
+			<a href="{{ url_for('home_est') }}" class="list-group-item list-group-item-action">
+				<i class="fa fa-cloud-sun-rain  fa-lg"></i> Est. Metereológica
+			</a>
+			
+			<!-- La pestaña de control solo accesible por usuarios con permisos de administrador -->
+			
+			<a href="{{ url_for('home_control') }}" class="list-group-item list-group-item-action">
+				<i class="fa fa-sliders-h fa-lg"></i> Control
+			</a>
+			
+			
+			<!-- Botón para cerrar sesión -->
+			<li>
+				<form action="/logout" method="POST">
+					<input type="submit" value="Cerrar sesión" name= "Close" class="btn btn-primary btn-large btn-block button_logout" style="font-size : 1.1vw; font-family:Bookman, Verdana, Arial, Helvetica, sans-serif;" > </input>
+				</form>
+			</li>
+                
+		</ul>
+	</div>
+</div>
+
+	{% block body %}{% endblock %}
+</body>
+

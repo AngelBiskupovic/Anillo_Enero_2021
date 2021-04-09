@@ -1,0 +1,82 @@
+/* Modificaciones a elementos en login.html*/
+* {
+box-sizing: border-box;
+}
+ 
+*:focus {
+	outline: none;
+}
+body {
+font-family: Arial;
+background: #4f5b69;
+margin-top: 1%;
+}
+
+.login {
+margin: auto;
+width: 25%;
+}
+
+.login-screen {
+background-color: #FFF;
+padding: 2%;
+border-radius: 3%
+}
+ 
+.app-title {
+text-align: center;
+color: #777;
+margin-bottom: 10%;
+  font-size: 1.3vw ;
+}
+ 
+.login-form {
+text-align: center;
+}
+
+
+.control-group {
+margin-bottom: 3%;
+}
+ 
+input {
+text-align: center;
+background-color: #ECF0F1;
+border: 2px solid transparent;
+border-radius: 1%;
+  font-size: 1.7vw;
+font-weight: 200;
+  padding: 3% ;
+  width: 80%;
+}
+ 
+input:focus {
+border: 2px solid #3498DB;
+box-shadow: none;
+}
+ 
+
+ 
+.login-link {
+  font-size: 12px;
+  color: #444;
+  display: block;
+	margin-top: 12px;
+}
+
+
+.header{
+  padding: 1px; 
+  text-align: center; 
+  background: #4f5b69; 
+  color: white;
+  font-size: 1vw ;
+}
+
+.btn-primary{
+color:#fff;
+font-size:1.5vw;
+font-weight:bold;
+background: #3498DB;
+
+}

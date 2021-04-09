@@ -1,0 +1,266 @@
+{% extends "layout.html" %}
+{% block body %}
+<body style="background-color:#D3D3D3">
+	
+<script>
+
+	function getPlot(){
+		// Función para insertar gráficos en la página
+		var all = "all";
+		var qurl=$SCRIPT_ROOT + '/Graficos_t2';
+		$.ajax({
+			
+			type: "POST",
+			cache: false,
+			data:{seleccion:all},
+			url: qurl,
+			dataType: "json",
+			success: function(data){
+				// Se insertan los gráficos obtenidos en la página
+				$("body").append(data.script1); 
+				$("body").append(data.script2); 
+				$("body").append(data.script3);
+				$("body").append(data.script4);
+				$("body").append(data.script5);
+				$("body").append(data.script6);
+				$("body").append(data.script7); 
+				$("body").append(data.script8); 
+				document.getElementById("html1").innerHTML = data.div1;
+				document.getElementById("html2").innerHTML = data.div2;
+				document.getElementById("html3").innerHTML = data.div3;
+				document.getElementById("html4").innerHTML = data.div4;
+				document.getElementById("html5").innerHTML = data.div5;
+				document.getElementById("html6").innerHTML = data.div6;
+				document.getElementById("html7").innerHTML = data.div7;
+				document.getElementById("html8").innerHTML = data.div8;
+				
+				// Se desactiva la animación de carga  
+				var parent = document.getElementById("Loader_div");
+				parent.style.display = 'none';
+				
+				// Se activa el gráfico de presión hidróstatica  
+				var parent = document.getElementById("p_hidro");
+				parent.style.display = 'block';
+			},
+			error: function(jqXHR){
+				console.log("ERROR: " + jqXHR)
+			}
+		})
+	};
+
+	// Se desactiva el gráfico de presión hidrostática y se hace la petición de los gráficos
+	$(document).ready(function(){
+		
+		var parent = document.getElementById("p_hidro");
+		parent.style.display = 'none';
+		getPlot();
+ 	});
+
+</script> 
+
+					<!--#################################################-->
+					<!--######-- Animación de carga de gráficos --#######-->
+					<!--#################################################-->
+<div id="Loader_div" class="card border-0">
+	<p id="Loader1" class="loader"> </p>
+	<h1 id="Loader2"> Cargando datos ... </h1>
+</div>
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Presión hidrostática --###-->
+					<!--#################################################-->
+
+<div class= "Tendencias_1_1" id="p_hidro">
+	<div class="card w-100">
+
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Presión hidrostática (Kpa) </p> </h5>
+		</div>
+		
+		<div class= "Tendencias_1_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js5" >{{ script5 | safe }}  </div>
+						<div id="html5"  class = "plot2" >{{ div5 | safe }}  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>		
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Concentración de sólidos --###-->
+					<!--#################################################-->
+
+<div class= "Tendencias_2_1">
+	<div class="card w-100">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center">Concentración de sólidos (%Cp)</p> </h5>
+		</div>
+		
+		<div class= "Tendencias_2_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js6" >{{ script6 | safe }}  </div>
+						<div id="html6"  class = "plot2" >{{ div6 | safe }}  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>		
+		
+					<!--#################################################-->
+					<!--###-- Gráfico de Nivel de cama --###-->
+					<!--#################################################-->
+
+<div class= "Tendencias_3_1">
+	<div class="card w-100">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Nivel de cama (m)</p> </h5>
+		</div>
+		
+		<div class= "Tendencias_3_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js7" >{{ script7 | safe }}  </div>
+						<div id="html7"  class = "plot2" >{{ div7 | safe }}  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>		
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Flujo floculante --###-->
+					<!--#################################################-->
+
+<div class= "Tendencias_4_1_1">
+	<div class="card w-100">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Flujo floculante (m<sup>3</sup>/h)</p> </h5>
+		</div>
+		
+		<div class= "Tendencias_4_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js2" >{{ script2 | safe }}  </div>
+						<div id="html2"  class = "plot2" >{{ div2 | safe }}  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Flujo de descarga --###-->
+					<!--#################################################-->
+
+<div class= "Tendencias_5_1">
+	<div class="card w-100">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Flujo de descarga (m<sup>3</sup>/h)</p> </h5>
+		</div>
+		
+		<div class= "Tendencias_5_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js1" >{{ script1 | safe }}  </div>
+						<div id="html1"  class = "plot2" >{{ div1| safe }}  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Set point bomba 3 --###-->
+					<!--#################################################-->
+
+<div class= "Tendencias_6_1">
+	<div class="card w-100">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Set point bomba 3 (bar)</p> </h5>
+		</div>
+		
+		<div class= "Tendencias_6_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js3" >{{ script3 | safe }}  </div>
+						<div id="html3"  class = "plot2" >{{ div3 | safe }}  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Set point bomba 4 --###-->
+					<!--#################################################-->
+
+<div class= "Tendencias_7_1">
+	<div class="card w-100">
+	
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Set point bomba 4 (bar)</p> </h5>
+		</div>
+		
+		<div class= "Tendencias_7_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js4" >{{ script4 | safe }}  </div>
+						<div id="html4"  class = "plot2" >{{ div4 | safe }}  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>		
+
+					<!--#################################################-->
+					<!--###-- Gráfico de Setpoint flujo de floculante --###-->
+					<!--#################################################-->
+					
+<div class= "Tendencias_8_1">
+	<div class="card w-100">
+		
+		<div class="card-header bg-dark text-white">
+			<h5> <p class=" font-weight-bold text-center"> Setpoint flujo de floculante (m<sup>3</sup>/h)</p> </h5>
+		</div>
+		
+		<div class= "Tendencias_8_2">
+			<div class="card w-100">
+				<div class="card-body">
+					<div>
+						<div id="js8" >{{ script8| safe }}  </div>
+						<div id="html8"  class = "plot2" >{{ div8 | safe }}  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>		
+
+{% endblock %}
+
+
+
+
+
